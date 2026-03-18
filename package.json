@@ -1,0 +1,25 @@
+{
+  "name": "atividadeavalitivabackend",
+  "version": "1.0.0",
+  "description": "Atividade Backend — Sistema de Despesas Pessoais (Node.js) — Objetivo da atividade: Desenvolver uma API REST em Node.js para gerenciamento de despesas pessoais, permitindo registrar, listar, atualizar e remover despesas.",
+  "homepage": "https://github.com/NickolasHardRock/Atividade-I---Sistema-de-Despesas-Pessoais#readme",
+  "bugs": {
+    "url": "https://github.com/NickolasHardRock/Atividade-I---Sistema-de-Despesas-Pessoais/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickolasHardRock/Atividade-I---Sistema-de-Despesas-Pessoais.git"
+  },
+  "license": "ISC",
+  "author": "Nickolas Lamin",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "start",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}

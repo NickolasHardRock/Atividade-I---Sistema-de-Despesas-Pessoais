@@ -1,0 +1,13 @@
+{
+    "expense": [
+        {
+            "id": "",
+            "title": "",
+            "amount": 0.0,
+            "category": "",
+            "date": "YY-MM-DD",
+            "description": "",
+            "createdAt": "YY-MM-DD"
+        }
+    ]
+}
