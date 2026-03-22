@@ -12,7 +12,19 @@ class Expense{
     }
 
     getByCategory(category){
-        return this.expenses.find(u => u.category === category);
+        return this.expenses.filter(u => u.category === category);
+    }
+
+    getByDate(date){
+        return this.expenses.filter(u => u.date === date);
+    }
+
+    sumary(){
+        const count = 0;
+        this.expenses.forEach(u => {
+            count =+ u.amount
+        });
+        return count;   
     }
 
     create(title,amount,category,date,description){
@@ -29,7 +41,7 @@ class Expense{
         return newExpens;
     }
 
-    update(id,amount,category,date,description){
+    update(id,title,amount,category,date,description){
         const index = this.expenses.findIndex(u => u.id === id);
 
         if(index === -1){ //Se o array estiver vazio, a função ira retornar erro
@@ -38,6 +50,7 @@ class Expense{
 
         this.expenses[index] = {
             ...this.expenses[index], // Copia todas as propriedades do objeto na posição index
+            title,
             amount,
             category,
             date,
@@ -58,6 +71,8 @@ class Expense{
         return null;
 
     }
+
+    
 
 
 }

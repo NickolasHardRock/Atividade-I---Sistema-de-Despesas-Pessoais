@@ -4,16 +4,17 @@ const app = express();
 
 const Despesas = require('./data/expense.js');
 
+
 app.use(express.json());
 
 const PORT = 3000;
 
 // Categoria: Doce
 Despesas.create("Banoff", 263.33, "Doce", "2026-03-10", "O doce perfeito");
-Despesas.create("Brigadeiro Gourmet", 45.00, "Doce", "2026-03-11", "Clássico brasileiro com chocolate belga");
+Despesas.create("Brigadeiro Gourmet", 45.00, "Doce", "2026-03-10", "Clássico brasileiro com chocolate belga");
 Despesas.create("Cheesecake Frutas Vermelhas", 120.00, "Doce", "2026-03-12", "Sobremesa cremosa e refrescante");
-Despesas.create("Torta Holandesa", 98.50, "Doce", "2026-03-13", "Camadas irresistíveis de creme e chocolate");
-Despesas.create("Brownie de Nutella", 75.00, "Doce", "2026-03-14", "Intenso e macio, para os chocólatras");
+Despesas.create("Torta Holandesa", 98.50, "Doce", "2026-03-10", "Camadas irresistíveis de creme e chocolate");
+Despesas.create("Brownie de Nutella", 75.00, "Doce", "2026-03-10", "Intenso e macio, para os chocólatras");
 
 // Categoria Bebida
 Despesas.create("Café Expresso", 12.50, "Bebida", "2026-03-11", "Energia para começar o dia");
@@ -43,12 +44,6 @@ Despesas.create("Bicicleta Mountain Bike", 1800.00, "Esporte", "2026-03-20", "Id
 Despesas.create("Camisa de Time", 250.00, "Esporte", "2026-03-21", "Uniforme oficial");
 Despesas.create("Kit Musculação", 600.00, "Esporte", "2026-03-22", "Completo para treinos em casa");
 
-console.log(Despesas.getAll());
-
-app.listen(PORT,() => {
-    console.log("Servidor foi iniciado na porta:", PORT);
-});
-
 
 app.get('/',(req,res)=>{
     res.send("Olá Mundo!");
@@ -57,24 +52,45 @@ app.get('/',(req,res)=>{
 app.get('/expenses',(req,res) =>{
     const expense = Despesas.getAll();
     res.status(200).json(expense);
+
 })
 
-app.get('/expense/:id',(req,res)=>{
+app.get('/expense/id/:id',(req,res)=>{ // gets que procuram por objeto especifico precisam de rotas diferentes para não entrar em conflito
     const expenseId = Despesas.getById(Number(req.params.id));
     res.status(200).json(expenseId);
 })
 
-app.get('/expense/:category',(req,res)=>{
-    const expense = Despesas.getBy(req.params.category);
-    res.status(200).json(expense);
+app.get('/expense/category/:category',(req,res)=>{
+    const expenseCategory = Despesas.getByCategory(req.params.category);
+    res.status(200).json(expenseCategory);
+})
+
+app.get('/expense/date/:date',(req,res)=>{
+    const expenseDate = Despesas.getByDate(req.params.date);
+    res.status(200).json(expenseDate);
 })
 
 app.post('/expense',(req,res) =>{
     const {title,amount,category,date,description} = req.body;
     const newExpens = Despesas.create(title,amount,category,date,description);
-    console.log(newExpens);
     res.status(201).json(newExpens);
-    console.log(res);
+})
+
+app.put('/expense/update/:id',(req,res)=>{
+    const {title,amount,category,date,description} = req.body;
+    
+    const updateExpens = Despesas.update(Number(req.params.id),title,amount,category,date,description)
+    console.log(updateExpens)
+    res.status(202).json(updateExpens);
+})
+
+app.delete('/expense/delete/:id',(req,res)=>{
+    Despesas.delete(Number(req.params.id));
+    res.status(204).json();
 })
 
 
+
+app.listen(PORT,() => {
+    console.log("Servidor foi iniciado na porta:", PORT);
+});
