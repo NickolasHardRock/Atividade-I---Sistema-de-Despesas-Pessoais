@@ -39,7 +39,7 @@ DELETE|/expenses/:id|Remove despesa
 
 ## Modelo da Entidade Expense
 
-Expense
+### Expense
 
 ### id : identificador da expense em inteiro no maximo 6 caracteres
 
@@ -66,7 +66,7 @@ Expense
 ### exemplo : Carne moída para o almoço 
 
 ### createdAt : Data que o sistema coloca no expense e uma string
-exemplo : 26-03-24
+### exemplo : 26-03-24
 
 # Requisições
 Aqui foi usado o Postman para usar as requições
