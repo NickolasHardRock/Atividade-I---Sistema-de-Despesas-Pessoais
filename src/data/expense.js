@@ -21,14 +21,14 @@ class Expense{
         return this.expenses.filter(u => u.date === date);
     }
 
-    sumary(){
+    summary(){
         let count = 0;
         this.expenses.forEach(u => {
             count = count + u.amount
         });
         return count;   
     }
-    sumaryCategory(category){
+    summaryCategory(category){
         return this.expenses
        .filter(u => u.category === category)
        .reduce((count, u) =>{
@@ -40,15 +40,19 @@ class Expense{
     create(title,amount,category,date,description){
         
         if(title === ""){
+            console.log("Quebrou aqui title");
             return null;
         }
 
-        if(amount > 0.0){
+        if(amount < 0.0){
+            console.log("Quebrou aqui amount");
             return null;
         }
 
         if(new Date(date) > new Date()){
+            console.log("Quebrou aqui date");
             return null;
+
         }
         
         const newExpens = {

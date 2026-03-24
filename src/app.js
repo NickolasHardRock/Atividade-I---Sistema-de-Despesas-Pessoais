@@ -44,12 +44,13 @@ Despesas.create("Bicicleta Mountain Bike", 1800.00, "Esporte", "2026-03-20", "Id
 Despesas.create("Camisa de Time", 250.00, "Esporte", "2026-03-21", "Uniforme oficial");
 Despesas.create("Kit Musculação", 600.00, "Esporte", "2026-03-22", "Completo para treinos em casa");
 
+console.log(Despesas.getAll());
 
 app.get('/',(req,res)=>{
     res.send("Olá Mundo!");
 })
 
-app.get('/expenses',(req,res) =>{
+app.get('/expense',(req,res) =>{
     const expense = Despesas.getAll();
     res.status(200).json(expense);
 
@@ -75,20 +76,20 @@ app.get('/expense/date/:date',(req,res)=>{
     res.status(200).json(expenseDate);
 })
 
-app.get('/expense/sumary',(req,res)=>{
+app.get('/expense/summary',(req,res)=>{
     
-    const expenseSumary = Despesas.sumary();
-    console.log(expenseSumary);
-    res.status(200).json(expenseSumary);
+    const expenseSummary = Despesas.summary();
+    console.log(expenseSummary);
+    res.status(200).json(expenseSummary);
 })
 
 
-app.get('/expense/sumary/category/:category',(req,res)=>{
+app.get('/expense/summary/category/:category',(req,res)=>{
     const {category} = req.params;
-    const expenseSumaryCategory = Despesas.sumaryCategory(category);
+    const expenseSummaryCategory = Despesas.summaryCategory(category);
     console.log(category)
-    console.log(expenseSumaryCategory);
-    res.status(200).json(expenseSumaryCategory);
+    console.log(expenseSummaryCategory);
+    res.status(200).json(expenseSummaryCategory);
 })
 
 app.post('/expense',(req,res) =>{
