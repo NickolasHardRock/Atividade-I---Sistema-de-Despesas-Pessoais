@@ -4,7 +4,15 @@
 
 ## Tecnologias Usadas: 
 
+Node.js - Como ambiente de desenvolvimento
+Express - Para gerenciar as rotas
+Nodemon - Para atualizações constantes
+git - Para versionamento
+Postmant - Para consumir a api
 
+## Como Executar 
+
+<npm run dev>
 
 
 
