@@ -71,9 +71,19 @@ app.get('/expense/date/:date',(req,res)=>{
 })
 
 app.get('/expense/sumary',(req,res)=>{
+    
     const expenseSumary = Despesas.sumary();
     console.log(expenseSumary);
     res.status(200).json(expenseSumary);
+})
+
+
+app.get('/expense/sumary/category/:category',(req,res)=>{
+    const {category} = req.params;
+    const expenseSumaryCategory = Despesas.sumaryCategory(category);
+    console.log(category)
+    console.log(expenseSumaryCategory);
+    res.status(200).json(expenseSumaryCategory);
 })
 
 app.post('/expense',(req,res) =>{

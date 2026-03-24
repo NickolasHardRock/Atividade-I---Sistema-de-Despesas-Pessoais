@@ -15,6 +15,8 @@ class Expense{
         return this.expenses.filter(u => u.category === category);
     }
 
+
+
     getByDate(date){
         return this.expenses.filter(u => u.date === date);
     }
@@ -26,17 +28,27 @@ class Expense{
         });
         return count;   
     }
-    sumaryCategory(){
-        let count = 0;
-        this.expenses.forEach(u => {
-            count = count + u.amount
-        });
-        return count;   
+    sumaryCategory(category){
+        return this.expenses
+       .filter(u => u.category === category)
+       .reduce((count, u) =>{
+        return count + u.amount;
+       },0);
+
     }
 
     create(title,amount,category,date,description){
+        
+        if(title === ""){
+            return null;
+        }
+
+        if(new Date(date) > new Date()){
+            return null;
+        }
+        
         const newExpens = {
-           id : Date.now(),
+           id : Math.floor(Math.random() * Math.floor(999999)),
             title,
             amount,
             category,
@@ -44,6 +56,9 @@ class Expense{
             description,
             createdAt : new Date()
         }
+
+        
+
         this.expenses.push(newExpens)
         return newExpens;
     }
