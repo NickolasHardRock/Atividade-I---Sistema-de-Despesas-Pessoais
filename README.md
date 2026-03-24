@@ -5,9 +5,13 @@
 ## Tecnologias Usadas: 
 
 Node.js - Como ambiente de desenvolvimento
+
 Express - Para gerenciar as rotas
+
 Nodemon - Para atualizações constantes
+
 git - Para versionamento
+
 Postmant - Para consumir a api
 
 ## Como Executar 
@@ -37,31 +41,31 @@ DELETE|/expenses/:id|Remove despesa
 
 Expense
 
-id : identificador da expense em inteiro no maximo 6 caracteres
+### id : identificador da expense em inteiro no maximo 6 caracteres
 
-exemplo : 476532
+### exemplo : 476532
 
-title : Nome da expense em string, todas as expense devem ter um nome
+### title : Nome da expense em string, todas as expense devem ter um nome
 
-exemplo : Carne moída
+### exemplo : Carne moída
 
-amount : Valor da expense em decimal, não pode ser menor que zero
+### amount : Valor da expense em decimal, não pode ser menor que zero
 
-exemplo : 23.34
+### exemplo : 23.34
 
-category : Nome da categoria da expense em string
+### category : Nome da categoria da expense em string
 
-exemplo : Compra do mês
+###  exemplo : Compra do mês
 
-date : Data que o usuario coloca na expense, não pode ser uma data futura e é uma string
+### date : Data que o usuario coloca na expense, não pode ser uma data futura e é uma string
 
-exemplo : 26-03-24
+### exemplo : 26-03-24
             
-description : Uma descrição da expense e uma string
+### description : Uma descrição da expense e uma string
 
-exemplo : Carne moída para o almoço 
+### exemplo : Carne moída para o almoço 
 
-createdAt : Data que o sistema coloca no expense e uma string
+### createdAt : Data que o sistema coloca no expense e uma string
 exemplo : 26-03-24
 
 # Requisições
