@@ -57,6 +57,11 @@ app.get('/expenses',(req,res) =>{
 
 app.get('/expense/id/:id',(req,res)=>{ // gets que procuram por objeto especifico precisam de rotas diferentes para não entrar em conflito
     const expenseId = Despesas.getById(Number(req.params.id));
+    
+    if(!expenseId){
+        res.status(404).json(Error = "Despesa não encontrada")
+    }
+
     res.status(200).json(expenseId);
 })
 
@@ -88,13 +93,13 @@ app.get('/expense/sumary/category/:category',(req,res)=>{
 
 app.post('/expense',(req,res) =>{
     const {title,amount,category,date,description} = req.body;
-    const newExpens = Despesas.create(title,amount,category,date,description);
+    const newExpens = Despesas.create(title,amount,category,date,description);    
     res.status(201).json(newExpens);
 })
 
 app.put('/expense/update/:id',(req,res)=>{
+
     const {title,amount,category,date,description} = req.body;
-    
     const updateExpens = Despesas.update(Number(req.params.id),title,amount,category,date,description)
     console.log(updateExpens)
     res.status(202).json(updateExpens);

@@ -43,12 +43,16 @@ class Expense{
             return null;
         }
 
+        if(amount > 0.0){
+            return null;
+        }
+
         if(new Date(date) > new Date()){
             return null;
         }
         
         const newExpens = {
-           id : Math.floor(Math.random() * Math.floor(999999)),
+            id : Math.floor(Math.random() * Math.floor(999999)),
             title,
             amount,
             category,
@@ -57,7 +61,7 @@ class Expense{
             createdAt : new Date()
         }
 
-        
+       
 
         this.expenses.push(newExpens)
         return newExpens;
