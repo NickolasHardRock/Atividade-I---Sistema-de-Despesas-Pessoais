@@ -20,9 +20,16 @@ class Expense{
     }
 
     sumary(){
-        const count = 0;
+        let count = 0;
         this.expenses.forEach(u => {
-            count =+ u.amount
+            count = count + u.amount
+        });
+        return count;   
+    }
+    sumaryCategory(){
+        let count = 0;
+        this.expenses.forEach(u => {
+            count = count + u.amount
         });
         return count;   
     }

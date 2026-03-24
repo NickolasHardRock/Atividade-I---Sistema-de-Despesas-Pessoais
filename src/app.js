@@ -70,6 +70,12 @@ app.get('/expense/date/:date',(req,res)=>{
     res.status(200).json(expenseDate);
 })
 
+app.get('/expense/sumary',(req,res)=>{
+    const expenseSumary = Despesas.sumary();
+    console.log(expenseSumary);
+    res.status(200).json(expenseSumary);
+})
+
 app.post('/expense',(req,res) =>{
     const {title,amount,category,date,description} = req.body;
     const newExpens = Despesas.create(title,amount,category,date,description);
