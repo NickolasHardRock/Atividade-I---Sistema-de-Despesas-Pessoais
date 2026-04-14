@@ -1,9 +1,7 @@
-const express = require('express');
+import express from 'express'
+import expenseView from './src/view/expenseView.js';
 
 const app = express();
-
-const Despesas = require('./data/expense.js');
-
 
 app.use(express.json());
 

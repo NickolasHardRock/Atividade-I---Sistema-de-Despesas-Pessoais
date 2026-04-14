@@ -6,14 +6,15 @@
   "bugs": {
     "url": "https://github.com/NickolasHardRock/Atividade-I---Sistema-de-Despesas-Pessoais/issues"
   },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NickolasHardRock/Atividade-I---Sistema-de-Despesas-Pessoais.git"
   },
   "license": "ISC",
   "author": "Nickolas Lamin",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "./index.js",
   "scripts": {
     "test": "start",
     "dev": "nodemon src/app.js"

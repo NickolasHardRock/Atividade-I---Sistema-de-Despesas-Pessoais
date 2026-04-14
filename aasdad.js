@@ -102,9 +102,6 @@ class Expense{
 
     }
 
-    
-
-
 }
 
-module.exports = new Expense();
+export default new Expense();
