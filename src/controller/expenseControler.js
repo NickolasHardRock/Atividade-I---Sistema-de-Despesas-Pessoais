@@ -1,10 +1,11 @@
-import expenseModel from "../models/expense";
+import expenseModel from "../models/expenseModel";
 
 class expenseController{
     
-getAll(){
-    return expenseModel.getAll()
+  getAll(){
+    return expenseModel.getAll();
 }
+
 
 getById(id){
     return expenseModel.getById(id)
@@ -46,19 +47,19 @@ create(title,amount,category,date,description){
         return null
     }
 
-    return expenseController.create(title,amount,category,date,description)
+    return expenseModel.create(title,amount,category,date,description)
 
 }
 
 update(id,title,amount,category,date,description){
 
-    return expenseController.update(id,title,amount,category,date,description)
+    return expenseModel.update(id,title,amount,category,date,description)
 
 }
 
 delete(id){
     
-    return expenseController.delete(id)
+    return expenseModel.delete(id)
 
 }
 
