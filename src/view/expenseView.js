@@ -1,24 +1,20 @@
-import expenseController from "../controller/expenseControler.js"
+import ExpenseController from "../controller/expenseControler.js"
 
-class expenseView{
+class ExpenseView{
     
     
     getAll(req,res){
-        res.send(expenseController.getAll())
+        res.send(ExpenseController.getAll())
     }
 
     getById(req,res){
-        const expense = expenseController.getById(Number(req.params.id))
-
-        if(!expense){
-            res.status(400).send('Despesa não encontrado!')
-        }else{
-            res.send(expense)
-        }
+        console.log("Chegou aqui")
+        const id = Number(req.params.id)
+        res.send(ExpenseController.getById(id))
     }
 
     getByCategory(req,res){
-        const expenseCategory = expenseController.getByCategory(req.params.category)
+        const expenseCategory = ExpenseController.getByCategory(req.params.category)
         
         if(!expenseCategory){
             res.status(400).send('Despesa não encontrada!')
@@ -28,7 +24,7 @@ class expenseView{
     }
 
     getByDate(req,res){
-        const expenseDate = expenseController.getByDate(req.body.date)
+        const expenseDate = ExpenseController.getByDate(req.params.date)
 
         if(!expenseDate){
             res.status(400).send('Despesa não encontrada!')
@@ -38,13 +34,17 @@ class expenseView{
 
     }
 
-    sumary(req,res){
-        res.send(expenseController.sumary())
+    summary(req,res){
+        try {
+            res.send(ExpenseController.summary())   
+        } catch (error) {
+            res.json({message:error.message})        
+        }
     }
 
 
-    sumaryCategory(req,res){
-        const expenseSummaryCategory = expenseController.sumaryCategory(req.body.category)
+    summaryCategory(req,res){
+        const expenseSummaryCategory = ExpenseController.summaryCategory(req.params.category)
         
         if(!expenseSummaryCategory){
             res.status(400).send('Despesa não encontrada!')
@@ -56,35 +56,37 @@ class expenseView{
 
     create(req,res){
         const {title,amount,category,date,description} = req.body
-        const newExpens = expenseController.create(title,amount,category,date,description)
+        const newExpens = ExpenseController.create(title,amount,category,date,description)
         res.send(newExpens)
     }
 
     update(req,res){
-        const id = req.params.id
-        const {title,amount,category,date,description} = req.body
-
-        const expenseUpdate = expenseController.update(id,title,amount,category,date,description)
-
-        if(!expenseUpdate){
-            res.status(400).send('Despesa não encontrada!')
-        }else{
-            res.send(expenseUpdate)
+        try {
+            const id = Number(req.params.id)
+            const {title,amount,category,date,description} = req.body
+            console.log(req.body)
+            const expenseUpdate = ExpenseController.update(id,title,amount,category,date,description)
+            res.status(200).json(expenseUpdate)
+        } catch (error) {
+            res.status(500).json({message:error.message})
         }
+
+
+        console.log("chegou aqui")
+        
+        
+        
     }
 
     delete(req,res){
 
-        const expenseDelete = expenseController.delete(Number(req.params.id))
+        const expenseDelete = ExpenseController.delete(Number(req.params.id))
 
-        if(!expenseDelete){
-            res.status(400).send('Despesa não encontra!')
-        }else{
             res.send(expenseDelete)
-        }
+        
 
     }
 
 }
 
-export default expenseView()
+export default new ExpenseView()

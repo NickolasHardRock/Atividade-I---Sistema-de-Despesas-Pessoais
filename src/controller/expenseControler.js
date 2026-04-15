@@ -1,38 +1,39 @@
-import expenseModel from "../models/expenseModel";
+import ExpenseModel from "../models/expenseModel.js";
 
-class expenseController{
+class ExpenseController{
     
   getAll(){
-    return expenseModel.getAll();
-}
+    return ExpenseModel.getAll();
+    }
 
 
 getById(id){
-    return expenseModel.getById(id)
+    return ExpenseModel.getById(id)
 }
 
 getByCategory(category){
-    return expenseModel.getAll().filter(u => u.category === category)
+    return ExpenseModel.getAll().filter(u => u.category === category)
 }
 
 getByDate(date){
-    return expenseModel.getAll().filter(u => u.date === date)
+    return ExpenseModel.getAll().filter(u => u.date === date)
 }
 
 summary(){
     let count = 0;
-    expenseModel.getAll().forEach(u => {
+    ExpenseModel.getAll().forEach(u => {
             count = count + u.amount
         })
         return count;
 }
 
 summaryCategory(category){
-    return this.expenseModel
+    return ExpenseModel.getAll()
     .filter(u => u.category === category)
-    .reduce((count, u) =>{
-        return count + u.amount;
-       },0)
+    .reduce((count,u) => {
+        return count + u.amount
+    },0)
+   
 }
 
 create(title,amount,category,date,description){
@@ -47,22 +48,22 @@ create(title,amount,category,date,description){
         return null
     }
 
-    return expenseModel.create(title,amount,category,date,description)
+    return ExpenseModel.create(title,amount,category,date,description)
 
 }
 
 update(id,title,amount,category,date,description){
 
-    return expenseModel.update(id,title,amount,category,date,description)
+    return ExpenseModel.update(id,title,amount,category,date,description)
 
 }
 
 delete(id){
     
-    return expenseModel.delete(id)
+    return ExpenseModel.delete(id)
 
 }
 
 }
 
-export default expenseController();
+export default new ExpenseController();

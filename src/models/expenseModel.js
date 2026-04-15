@@ -1,4 +1,4 @@
-class expense{
+class Expense{
     constructor(){
         this.expenses = []
     }
@@ -58,4 +58,4 @@ class expense{
     }
 }
 
-export default new expense();
+export default new Expense();
