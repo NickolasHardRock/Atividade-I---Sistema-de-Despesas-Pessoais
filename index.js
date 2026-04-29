@@ -53,7 +53,7 @@ app.get('/',(req,res)=>{
 
 app.get('/Despesas',ExpenseView.getAll) // funciona
 
-app.get('/Despesas/id/:id',ExpenseView.getById) // funciona
+app.get('/Despesas/:id',ExpenseView.getById) // funciona
 
 app.get('/Despesas/category/:category',ExpenseView.getByCategory) // funciona
 
