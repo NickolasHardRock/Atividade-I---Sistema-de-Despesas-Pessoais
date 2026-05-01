@@ -8,15 +8,32 @@ class ExpenseController{
 
 
 getById(id){
+    if(!id || isNaN(id) || id == ''){
+        throw new Error("Favor informar id válido")
+    }
     return ExpenseModel.getById(id)
 }
 
 getByCategory(category){
-    return ExpenseModel.getAll().filter(u => u.category === category)
+
+    const result = ExpenseModel.getAll().filter(u => u.category === category)
+    console.log(result)
+    
+    if(result.length === 0){
+        throw new Error("Favor informar categoria válida")
+    }
+    if(result.includes("''")){
+        throw new Error("Favor informar categoria válida")
+    }
+    return result
 }
 
 getByDate(date){
-    return ExpenseModel.getAll().filter(u => u.date === date)
+    const result = ExpenseModel.getAll().filter(u => u.date === date) 
+    if(result.length === 0){
+        throw new Error("Favor informar data válida")
+    }
+    return result
 }
 
 summary(){

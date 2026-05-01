@@ -44,30 +44,30 @@ const PORT = 3000;
   ExpenseControler.create("Camisa de Time", 250.00, "Esporte", "2026-03-21", "Uniforme oficial");
   ExpenseControler.create("Kit Musculação", 600.00, "Esporte", "2026-03-22", "Completo para treinos em casa");
 
-  console.log(ExpenseControler.getAll());
-  console.log(ExpenseControler.getByCategory(883772))
 
 app.get('/',(req,res)=>{
     res.send("Olá Mundo!");
 })
 
-app.get('/Despesas',ExpenseView.getAll) // funciona
+// app.get('/api/v1/Despesas/',ExpenseView.getAll) // funciona
 
-app.get('/Despesas/:id',ExpenseView.getById) // funciona
+// app.get('/api/v1/Despesas/',ExpenseView.getById) // funciona
 
-app.get('/Despesas/category/:category',ExpenseView.getByCategory) // funciona
+// app.get('/api/v1/Despesas/:category',ExpenseView.getByCategory) // funciona
 
-app.get('/Despesas/date/:date',ExpenseView.getByDate) // funciona
+// app.get('/api/v1/Despesas/date/:date',ExpenseView.getByDate) // funciona
 
-app.get('/Despesas/summary',ExpenseView.summary) // funciona
+// app.get('/api/v1/Despesas/summary',ExpenseView.summary) // funciona
 
-app.get('/Despesas/summary/category/:category',ExpenseView.summaryCategory) // funciona
+// app.get('/api/v1/Despesas/summary/category/:category',ExpenseView.summaryCategory) // funciona
 
-app.post('/Despesas/Adicionar',ExpenseView.create) // funciona
+app.get('/api/v1/Despesas/',ExpenseView.getExpense)
 
-app.put('/Despesas/update/id/:id',ExpenseView.update)
+app.post('/api/v1/Despesas/Adicionar',ExpenseView.create) // funciona
 
-app.delete('/Despesas/delete/id/:id',ExpenseView.delete) // funciona
+app.put('/api/v1/Despesas/update/id/:id',ExpenseView.update)
+
+app.delete('/api/v1/Despesas/delete/id/:id',ExpenseView.delete) // funciona
 
 
 app.listen(PORT,() => {
