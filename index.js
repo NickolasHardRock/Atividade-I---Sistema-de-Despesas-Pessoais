@@ -63,11 +63,11 @@ app.get('/',(req,res)=>{
 
 app.get('/api/v1/Despesas/',ExpenseView.getExpense)
 
-app.post('/api/v1/Despesas/Adicionar',ExpenseView.create) // funciona
+app.post('/api/v1/Despesas/',ExpenseView.create) // funciona
 
-app.put('/api/v1/Despesas/update/id/:id',ExpenseView.update)
+app.put('/api/v1/Despesas/:id',ExpenseView.update)
 
-app.delete('/api/v1/Despesas/delete/id/:id',ExpenseView.delete) // funciona
+app.delete('/api/v1/Despesas/:id',ExpenseView.delete) // funciona
 
 
 app.listen(PORT,() => {
