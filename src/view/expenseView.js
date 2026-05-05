@@ -9,7 +9,7 @@ class ExpenseView {
         console.log(req.query)
         try {
             if (id) {
-                return res.status(200).json(ExpenseController.getById(id))
+                return res.status(200).json(ExpenseController.getById(Number(id)))
             }
             if (category && summary === 'true') {
 
@@ -57,11 +57,11 @@ class ExpenseView {
     }
 
     delete(req, res) {
-        try{
+        try {
             const expenseDelete = ExpenseController.delete(Number(req.params.id))
             res.status(204).json(expenseDelete)
-        }catch(error){
-            return res.status(404).json({error: error.message })
+        } catch (error) {
+            return res.status(400).json({ error: error.message })
         }
     }
 

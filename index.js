@@ -45,29 +45,21 @@ const PORT = 3000;
   ExpenseControler.create("Kit Musculação", 600.00, "Esporte", "2026-03-22", "Completo para treinos em casa");
 
 
+  console.log(ExpenseView.getExpense)
+
+
 app.get('/',(req,res)=>{
     res.send("Olá Mundo!");
 })
 
-// app.get('/api/v1/Despesas/',ExpenseView.getAll) // funciona
-
-// app.get('/api/v1/Despesas/',ExpenseView.getById) // funciona
-
-// app.get('/api/v1/Despesas/:category',ExpenseView.getByCategory) // funciona
-
-// app.get('/api/v1/Despesas/date/:date',ExpenseView.getByDate) // funciona
-
-// app.get('/api/v1/Despesas/summary',ExpenseView.summary) // funciona
-
-// app.get('/api/v1/Despesas/summary/category/:category',ExpenseView.summaryCategory) // funciona
 
 app.get('/api/v1/Despesas/',ExpenseView.getExpense)
 
-app.post('/api/v1/Despesas/',ExpenseView.create) // funciona
+app.post('/api/v1/Despesas/',ExpenseView.create) 
 
 app.put('/api/v1/Despesas/:id',ExpenseView.update)
 
-app.delete('/api/v1/Despesas/:id',ExpenseView.delete) // funciona
+app.delete('/api/v1/Despesas/:id',ExpenseView.delete) 
 
 
 app.listen(PORT,() => {
