@@ -447,7 +447,7 @@ class ExpenseController {
                 },
                 {
                     method:"POST",
-                    href:"http://localhost:3000/api/v1/Despesas/
+                    href:"http://localhost:3000/api/v1/Despesas/"
                 },
                 {
                     method:"PUT",
