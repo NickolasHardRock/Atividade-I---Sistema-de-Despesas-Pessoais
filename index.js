@@ -1,6 +1,19 @@
 import express from 'express'
 import ExpenseView from './src/view/expenseView.js';
 import ExpenseControler from './src/controller/expenseControler.js';
+// import { Sequelize } from 'sequelize';
+
+// const sequelize = new Sequelize('sqlite::memory:',{logging: console.log});
+
+// async function main() {
+//   try {
+//     await sequelize.authenticate();
+//     console
+//   } catch (error) {
+    
+//   }
+// }
+
 const app = express();
 
 app.use(express.json());
@@ -53,13 +66,13 @@ app.get('/',(req,res)=>{
 })
 
 
-app.get('/api/v1/Despesas/',ExpenseView.getExpense)
+app.get('/api/v1/despesas/',ExpenseView.getExpense)
 
-app.post('/api/v1/Despesas/',ExpenseView.create) 
+app.post('/api/v1/despesas/',ExpenseView.create) 
 
-app.put('/api/v1/Despesas/:id',ExpenseView.update)
+app.put('/api/v1/despesas/:id',ExpenseView.update)
 
-app.delete('/api/v1/Despesas/:id',ExpenseView.delete) 
+app.delete('/api/v1/despesas/:id',ExpenseView.delete) 
 
 
 app.listen(PORT,() => {
