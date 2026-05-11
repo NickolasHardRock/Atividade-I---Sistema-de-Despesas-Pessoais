@@ -1,6 +1,8 @@
 import express from 'express'
 import ExpenseView from './src/view/expenseView.js';
 import ExpenseControler from './src/controller/expenseControler.js';
+import sequelize from './src/config/db.js';
+import "./src/models"
 // import { Sequelize } from 'sequelize';
 
 // const sequelize = new Sequelize('sqlite::memory:',{logging: console.log});

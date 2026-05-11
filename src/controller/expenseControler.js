@@ -1,4 +1,8 @@
-import ExpenseModel from "../models/expenseModel.js";
+import expense,{getAllExpense,
+    getExpenseId,
+    createExpense,
+    updateExpense,
+    deleteExpense} from "../models/expenseModel.js"
 
 class ExpenseController {
 
@@ -95,7 +99,7 @@ class ExpenseController {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
 
-        const result = ExpenseModel.create(title, amount, category, date, description)
+        const result = createExpense(title, amount, category, date, description)
 
         const id = result.id
 
