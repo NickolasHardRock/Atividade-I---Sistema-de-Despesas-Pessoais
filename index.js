@@ -45,7 +45,7 @@ const PORT = 3000;
   ExpenseControler.create("Kit Musculação", 600.00, "Esporte", "2026-03-22", "Completo para treinos em casa");
 
 
-  console.log(ExpenseView.getExpense)
+  // console.log(ExpenseView.getExpense)
 
 
 app.get('/',(req,res)=>{
