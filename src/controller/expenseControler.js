@@ -7,44 +7,7 @@ class ExpenseController {
         if(result.length === 0){
             throw new Error("Não dados para retornar")
         }
-        
-        const resposta =
-        {
-            ...result,
-            links:[
-                {
-                    rel:"self",
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesass/"
-                },
-                {
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta
+        return result
     }
 
 
@@ -58,60 +21,7 @@ class ExpenseController {
             throw new Error("Despesas não encontrada")
         }
 
-        const resposta = {
-            ...result,
-            data:[
-                {
-                    rel: "self",
-                    method: "GET",
-                    href:`http://localhost:3000/api/v1/Despesas/?id=`+id
-                },
-                {
-                    rel:"update",
-                    method: "PUT",
-                    href: `http://localhost:3000/api/v1/Despesas/`+id
-                },
-                {
-                    rel:"delete",
-                    method: "DELETE",
-                    href: `http://localhost:3000/api/v1/Despesas/`+id
-                }
-            ],
-            links:[
-                {
-                    rel:"self",
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesass/"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta
+        return result
     }
 
     getByCategory(category) {
@@ -126,50 +36,7 @@ class ExpenseController {
             throw new Error("Favor informar categoria válida")
         }
 
-        const resposta = {
-            ...result,
-            data:[
-                {
-                    rel: "self",
-                    method: "GET",
-                    href:`http://localhost:3000/api/v1/Despesa/?category`+category
-                }
-            ],
-            links:[
-                {
-                    rel:"self",
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta
+        return result
     }
 
     getByDate(date) {
@@ -178,50 +45,7 @@ class ExpenseController {
             throw new Error("Favor informar data válida")
         }
 
-        const resposta = {
-            ...result,
-            data:[
-                {
-                    rel: "self",
-                    method: "GET",
-                    href:`http://localhost:3000/api/v1/Despesas/?category`+date
-                }
-            ],
-            links:[
-                {
-                    rel:"self",
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta
+        return result
     }
 
     summary() {
@@ -234,50 +58,7 @@ class ExpenseController {
             throw new Error("Não a despesas, para resumir")
         }
 
-        const resposta = {
-            ...count,
-            data:[
-                {
-                    rel: "self",
-                    method: "GET",
-                    href:`http://localhost:3000/api/v1/Despesas/?summary=true`
-                }
-            ],
-            links:[
-                {
-
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {
-                    
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta;
+        return count;
     }
 
     summaryCategory(category) {
@@ -296,44 +77,7 @@ class ExpenseController {
             throw new Error("Não a despesas, para resumir")
         }
 
-        const resposta = {
-            ...count,
-            data:[
-                {
-                    rel: "self",
-                    method: "GET",
-                    href:`http://localhost:3000/api/v1/Despesas/?category=`+category+`&summary=true`
-                }
-            ],
-            links:[
-                {
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {   
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {   
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?"
-                },
-                {   
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
-                },
-                {   
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?summary=true"
-                },
-                {   
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
-                }
-            ]
-        }
-
-        return resposta
+        return result
 
     }
 
