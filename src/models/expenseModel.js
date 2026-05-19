@@ -26,6 +26,10 @@ const expense = sequelize.define('expense',{
     description:{
         type:DataTypes.TEXT,
         allowNull:true
+    },
+    fk_usuarioId:{
+        type:DataTypes.INTEGER,
+        allowNull:true
     }
 })
 
@@ -37,11 +41,11 @@ async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
-async function createExpense(title,amount,category,date,describe) {
-    return await expense.create({title,amount,category,date,describe});
+async function createExpense(title,amount,category,date,describe,fk_usuarioId) {
+    return await expense.create({title,amount,category,date,describe,fk_usuarioId});
 }
 
-async function updateExpense(id,title,amount,category,date,describe) {
+async function updateExpense(id,title,amount,category,date,describe,usuario) {
     const expense = await getExpenseId(id);
 
     if(!expense){
@@ -53,6 +57,7 @@ async function updateExpense(id,title,amount,category,date,describe) {
     expense.category = category;
     expense.date = date;
     expense.describe = describe;
+    expense.fk_usuarioId = usuario;
 
     await expense.save()
     console.log("Despesa atualizada");
