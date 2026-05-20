@@ -69,6 +69,7 @@ async function main() {
   try {
     await sequelize.authenticate()
     await sequelize.sync({force: true })
+    console.log('Conexão com o banco de dados estabelecida com sucesso.')
     await popularBase()
     app.listen(PORT, () => {
       console.log("Servidor foi iniciado na porta:", PORT);

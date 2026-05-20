@@ -29,7 +29,11 @@ const expense = sequelize.define('expense',{
     },
     fk_usuarioId:{
         type:DataTypes.INTEGER,
-        allowNull:true
+        allowNull:true,
+        references:{
+            model:'user',
+            key:'id'
+        }
     }
 })
 
