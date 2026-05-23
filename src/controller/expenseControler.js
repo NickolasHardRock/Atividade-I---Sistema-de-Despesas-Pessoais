@@ -86,14 +86,14 @@ class ExpenseController {
     }
 
     create(title, amount, category, date, description,usuario) {
-        if (title === "") {
+        if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {
             return new Error("Por favor adicione um gasto");
         }
-        if (category === "") {
-            return new Error("Por favor adicione um titulo");
+        if (!category) {
+            return new Error("Por favor adicione uma categoria");
         }
         if (new Date(date) > new Date()) {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
