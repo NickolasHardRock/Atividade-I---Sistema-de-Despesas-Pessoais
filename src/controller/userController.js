@@ -79,18 +79,35 @@ class UserController {
             return new Error("Favor adicione uma senha")
         }
 
-        return User.create(name, email, senha)
-
+        return User.createUser(name, email, senha)
 
     }
 
+    update(id,name,email,senha){
+        if(!id){
+        return new Error("Por favor adicione um id válido");
+        }
+        if(!name){
+            return new Error("Por favor adicione um name válido")
+        }
+        if(!email){
+            return new Error("Por favor adicione um email válido")
+        }
+        if(!senha){
+            return new Error("Por favor adicione uma senha válida")
+        }
 
+        return User.updateUser(id,name,email,senha);
 
+    }
 
-
-
-
-
-
-
+    delete(id){
+        if(!id){
+        return new Error("Por favor adicione um id válido");
+        }
+        
+        return User.deleteUser(id)
+    }
 }
+
+    export default new UserController();

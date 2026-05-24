@@ -136,7 +136,7 @@ class ExpenseController {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
-        if (title === "") {
+        if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {

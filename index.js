@@ -1,8 +1,10 @@
 import express from 'express'
 import ExpenseView from './src/view/expenseView.js';
+import UserView from './src/view/userView.js';
 import ExpenseControler from './src/controller/expenseControler.js';
 import sequelize from './src/config/db.js';
 import {user,expense,initModels } from './src/models/index.js';
+import userView from './src/view/userView.js';
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.get('/', (req, res) => {
 })
 
 
+// Expenses
+
 app.get('/api/v1/despesas/', ExpenseView.getExpense)
 
 app.post('/api/v1/despesas/', ExpenseView.create)
@@ -23,6 +27,16 @@ app.post('/api/v1/despesas/', ExpenseView.create)
 app.put('/api/v1/despesas/:id', ExpenseView.update)
 
 app.delete('/api/v1/despesas/:id', ExpenseView.delete)
+
+// Usuarios
+
+app.get('/api/v1/usuarios/',UserView.getUser)
+
+app.post('/api/v1/usuarios/',UserView.create)
+
+app.put('/api/v1/usuarios/:id',UserView.update)
+
+app.delete('/api/v1/usuarios/:id', UserView.delete)
 
 async function popularBase() {
 
