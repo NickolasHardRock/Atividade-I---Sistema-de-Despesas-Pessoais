@@ -7,7 +7,7 @@ import expense,{getAllExpense,
 class ExpenseController {
 
     getAll() {
-        const result = ExpenseModel.getAll();
+        const result = expense.getAllExpense();
         if(result.length === 0){
             throw new Error("Não dados para retornar")
         }

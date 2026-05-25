@@ -1,4 +1,4 @@
-import UserController from "../controller/userController";
+import UserController from "../controller/userController.js";
 
 class UserView{
 
@@ -11,7 +11,7 @@ class UserView{
                     data:[
                         {rel:"self",
                         method:"GET",
-                        href: "sadfdsafas"}
+                        href: "/api/v1/usuarios/"}
                     ]
                 })
             }

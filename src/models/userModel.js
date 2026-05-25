@@ -20,6 +20,9 @@ const user = sequelize.define('user',{
         type:DataTypes.TEXT,
         allowNull:true
     }
+},{
+    tableName:'user',
+    freezeTableName:true
 })
 
 async function getAllUser() {
