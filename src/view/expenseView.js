@@ -308,7 +308,7 @@ class ExpenseView {
             }
 
         }
-        } catch(error) {
+catch(error) {
         return res.status(400).json({ error: error.message })
     }
 }
@@ -372,6 +372,6 @@ delete (req, res) {
     }
 }
 
-
+}
 
 export default new ExpenseView()
