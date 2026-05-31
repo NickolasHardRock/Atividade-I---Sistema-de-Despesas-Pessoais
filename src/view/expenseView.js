@@ -14,49 +14,39 @@ class ExpenseView {
                         {
                             rel: "self",
                             method: "GET",
-                            href: `http://localhost:3000/api/v1/Despesas/?id=` + id
-                        },
-                        {
-                            rel: "update",
-                            method: "PUT",
-                            href: `http://localhost:3000/api/v1/Despesas/` + id
-                        },
-                        {
-                            rel: "delete",
-                            method: "DELETE",
-                            href: `http://localhost:3000/api/v1/Despesas/` + id
+                            href: `http://localhost:3000/api/v1/despesas/?id=` + id
                         }
                     ],
                     links: [
                         {
                             rel: "self",
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesass/"
+                            href: "http://localhost:3000/api/v1/despesas/"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?id=?"
+                            href: "http://localhost:3000/api/v1/despesas/?id=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                            href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?summary=true"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                         }
                     ]
                 })
@@ -68,33 +58,33 @@ class ExpenseView {
                         {
                             rel: "self",
                             method: "GET",
-                            href: `http://localhost:3000/api/v1/Despesas/?category=` + category + `&summary=true`
+                            href: `http://localhost:3000/api/v1/despesas/?category=` + category + `&summary=true`
                         }
                     ],
                     links: [
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/"
+                            href: "http://localhost:3000/api/v1/despesas/"
                         },
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?id=?"
+                            href: "http://localhost:3000/api/v1/despesas/?id=?"
                         },
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?"
                         },
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                            href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                         },
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?summary=true"
                         },
                         {
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                         }
                     ]
                 })
@@ -114,32 +104,32 @@ class ExpenseView {
                             {
                                 rel: "self",
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/"
+                                href: "http://localhost:3000/api/v1/despesas/"
                             },
                             {
 
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/?id=?"
+                                href: "http://localhost:3000/api/v1/despesas/?id=?"
                             },
                             {
 
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                                href: "http://localhost:3000/api/v1/despesas/?category=?"
                             },
                             {
 
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                                href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                             },
                             {
 
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                                href: "http://localhost:3000/api/v1/despesas/?summary=true"
                             },
                             {
 
                                 method: "GET",
-                                href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                                href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                             }
                         ]
                     }
@@ -151,39 +141,39 @@ class ExpenseView {
                         {
                             rel: "self",
                             method: "GET",
-                            href: `http://localhost:3000/api/v1/Despesas/?category` + date
+                            href: `http://localhost:3000/api/v1/despesas/?category` + date
                         }
                     ],
                     links: [
                         {
                             rel: "self",
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/"
+                            href: "http://localhost:3000/api/v1/despesas/"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?id=?"
+                            href: "http://localhost:3000/api/v1/despesas/?id=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                            href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?summary=true"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                         }
                     ]
                 })
@@ -194,39 +184,39 @@ class ExpenseView {
                         {
                             rel: "self",
                             method: "GET",
-                            href: `http://localhost:3000/api/v1/Despesas/?summary=true`
+                            href: `http://localhost:3000/api/v1/despesas/?summary=true`
                         }
                     ],
                     links: [
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/"
+                            href: "http://localhost:3000/api/v1/despesas/"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?id=?"
+                            href: "http://localhost:3000/api/v1/despesas/?id=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                            href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?summary=true"
                         },
                         {
 
                             method: "GET",
-                            href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                            href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                         }
                     ]
                 })
@@ -237,31 +227,31 @@ class ExpenseView {
                     {
                         rel: "self",
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesass/"
+                        href: "http://localhost:3000/api/v1/despesass/"
                     },
                     {
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesas/?id=?"
-                    },
-                    {
-
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesas/?category=?"
+                        href: "http://localhost:3000/api/v1/despesas/?id=?"
                     },
                     {
 
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesas/?date=YYYY-MM-DD"
+                        href: "http://localhost:3000/api/v1/despesas/?category=?"
                     },
                     {
 
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesas/?summary=true"
+                        href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
                     },
                     {
 
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/Despesas/?category=?&summary=true"
+                        href: "http://localhost:3000/api/v1/despesas/?summary=true"
+                    },
+                    {
+
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
                     }
                 ]
 
