@@ -259,20 +259,20 @@ class ExpenseView {
 
 
         } catch (error) {
-            if(id){
-                return res.status(404).json({error: error.message})
+            if (id) {
+                return res.status(404).json({ error: error.message })
             }
-            if(category && summary === 'true'){
-                return res.status(404).json({error: error.message})
+            if (category && summary === 'true') {
+                return res.status(404).json({ error: error.message })
             }
-            if(category){
-                return res.status(404).json({error: error.message})
+            if (category) {
+                return res.status(404).json({ error: error.message })
             }
-            if(date){
-                return res.status(404).json({error: error.message})
+            if (date) {
+                return res.status(404).json({ error: error.message })
             }
-            if(summary === 'true'){
-                return res.status(404).json({error: error.message})
+            if (summary === 'true') {
+                return res.status(404).json({ error: error.message })
             }
 
             return res.status(400).json({ error: error.message })
@@ -283,33 +283,95 @@ class ExpenseView {
         try {
             const { title, amount, category, date, description } = req.body
             const newExpens = ExpenseController.create(title, amount, category, date, description)
-            res.status(201).json(newExpens)
-        } catch (error) {
-            return res.status(400).json({ error: error.message })
-        }
-    }
+            res.status(201).json(newExpens), {
+                message: "Despasa criada",
+                data: [
+                    {
+                        rel: "self",
+                        method: "POST",
+                        href: "http://localhost:3000/api/v1/despesas/"
+                    },
+                    {
+                        method: "PUT",
+                        href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                    },
+                    {
 
-    update(req, res) {
-        try {
-            const id = Number(req.params.id)
-            const { title, amount, category, date, description } = req.body
-            console.log(req.body)
-            const expenseUpdate = ExpenseController.update(id, title, amount, category, date, description)
-            res.status(200).json(expenseUpdate)
-        } catch (error) {
-            res.status(400).json({ message: error.message })
-        }
-    }
+                        method: "DELETE",
+                        href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                    },
+                    {
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                    }
+                ]
+            }
 
-    delete(req, res) {
-        try {
-            const expenseDelete = ExpenseController.delete(Number(req.params.id))
-            res.status(204).json(expenseDelete)
-        } catch (error) {
-            return res.status(400).json({ error: error.message })
         }
+        } catch(error) {
+        return res.status(400).json({ error: error.message })
     }
-
 }
+
+update(req, res) {
+    try {
+        const id = Number(req.params.id)
+        const { title, amount, category, date, description } = req.body
+        console.log(req.body)
+        const expenseUpdate = ExpenseController.update(id, title, amount, category, date, description)
+        res.status(200).json(expenseUpdate), {
+            message: "Despesa atualizada",
+            data: [
+                {
+                    rel: "self",
+                    method: "POST",
+                    href: "http://localhost:3000/api/v1/despesas/"
+                },
+                {
+                    method: "DELETE",
+                    href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                },
+                {
+                    method: "GET",
+                    href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                }
+            ]
+        }
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+delete (req, res) {
+    try {
+        const expenseDelete = ExpenseController.delete(Number(req.params.id))
+        res.status(204).json(expenseDelete),{
+            message:"Despesa deletada "+id,
+            links:[
+                {
+                    rel:"self",
+                    method:"DELETE",
+                    href:"http://localhost:3000/api/v1/despesas/"
+                },
+                {
+                    method:"POST",
+                    href:"http://localhost:3000/api/v1/despesas/"
+                },
+                {
+                    method:"PUT",
+                    href:"http://localhost:3000/api/v1/despesas/?id=?"
+                },
+                {
+                    method:"GET",
+                    href:"http://localhost:3000/api/v1/despesas/"
+                }
+            ]
+        }
+    } catch (error) {
+        return res.status(400).json({ error: error.message })
+    }
+}
+
+
 
 export default new ExpenseView()

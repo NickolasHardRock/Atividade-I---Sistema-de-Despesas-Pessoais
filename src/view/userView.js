@@ -33,11 +33,11 @@ class UserView {
             }
 
             if (name) {
-                return res.status(200).json(UserController.getByName(name),{
+                return res.status(200).json(UserController.getByName(name), {
                     data: [
                         {
                             rel: "self",
-                             method: "GET",
+                            method: "GET",
                             href: "http://localhost:3000/api/v1/usuarios/?name=?"
                         }
                     ],
@@ -58,7 +58,7 @@ class UserView {
                 })
             }
             if (email) {
-                return res.status(200).json(UserController.getByEmail(email),{
+                return res.status(200).json(UserController.getByEmail(email), {
                     data: [
                         {
                             rel: "self",
@@ -83,29 +83,29 @@ class UserView {
                 })
             }
 
-            return res.status(200).json(UserController.getAll(),{
-                    data: [
-                        {
-                            rel: "self",
-                            method: "GET",
-                            href: "http://localhost:3000/api/v1/usuarios/" 
-                        }
-                    ],
-                    links: [
-                        {
-                            method: "GET",
-                            href: `/api/v1/usuarios/?id=` + id
-                        },
-                        {
-                            method: "GET",
-                            href: "http://localhost:3000/api/v1/usuarios/?email"
-                        },
-                        {
-                            method: "GET",
-                            href: "http://localhost:3000/api/v1/usuarios/?name=?"
-                        }
-                    ]
-                })
+            return res.status(200).json(UserController.getAll(), {
+                data: [
+                    {
+                        rel: "self",
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/usuarios/"
+                    }
+                ],
+                links: [
+                    {
+                        method: "GET",
+                        href: `/api/v1/usuarios/?id=` + id
+                    },
+                    {
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/usuarios/?email"
+                    },
+                    {
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/usuarios/?name=?"
+                    }
+                ]
+            })
 
         } catch (error) {
             if (id) {
@@ -128,7 +128,29 @@ class UserView {
         try {
             const { name, email, senha } = req.body
             const NewUser = UserController.create(name, email, senha)
-            res.status(201).json(NewUser)
+            res.status(201).json(NewUser), {
+                message: "Usuario criada",
+                data: [
+                    {
+                        rel: "self",
+                        method: "POST",
+                        href: "http://localhost:3000/api/v1/usuarios/"
+                    },
+                    {
+                        method: "PUT",
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                    },
+                    {
+
+                        method: "DELETE",
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                    },
+                    {
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                    }
+                ]
+            }
         } catch (error) {
             return res.status(400).json({ message: error.message })
         }
@@ -140,7 +162,24 @@ class UserView {
             const { name, email, senha } = req.body
             console.log(req.body)
             const UserUpdate = UserController.update(id, name, email, senha)
-            res.status(200).json(UserUpdate)
+            res.status(200).json(UserUpdate), {
+                message: "Usuario atualizado",
+                data: [
+                    {
+                        rel: "self",
+                        method: "POST",
+                        href: "http://localhost:3000/api/v1/usuarios/"
+                    },
+                    {
+                        method: "DELETE",
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                    },
+                    {
+                        method: "GET",
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                    }
+                ]
+            }
         } catch (error) {
             res.status(400).json({ message: error.message })
         }
@@ -149,7 +188,28 @@ class UserView {
     delete(req, res) {
         try {
             const UserDelete = UserController.delete(Number(req.params.id))
-            res.status(204).json(UserDelete)
+            res.status(204).json(UserDelete),{
+                message:"Usuario deletado "+ id,
+            links:[
+                {
+                    rel:"self",
+                    method:"DELETE",
+                    href:"http://localhost:3000/api/v1/usuarios/"
+                },
+                {
+                    method:"POST",
+                    href:"http://localhost:3000/api/v1/usuarios/"
+                },
+                {
+                    method:"PUT",
+                    href:"http://localhost:3000/api/v1/usuarios/?id=?"
+                },
+                {
+                    method:"GET",
+                    href:"http://localhost:3000/api/v1/usuarios/"
+                }
+            ]
+            }
         } catch (error) {
             return res.status(400).json({ message: error.message })
         }
