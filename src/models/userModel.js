@@ -20,6 +20,9 @@ const user = sequelize.define('user',{
         type:DataTypes.TEXT,
         allowNull:true
     }
+},{
+    tableName:'user',
+    freezeTableName:true
 })
 
 async function getAllUser() {
@@ -28,6 +31,18 @@ async function getAllUser() {
 
 async function getUserId(id) {
     return await user.findByPk(id);
+}
+
+async function getUserName(name) {
+    const user = await  user.findAll()
+
+    return await user.find(user => user.name === name)
+}
+
+async function getUserEmail(email) {
+    const user = await user.findAll()
+
+    return await user.find(user => user.email === email)
 }
 
 async function createUser(name,email,senha) {
@@ -65,6 +80,8 @@ export default user
 export{
     getUserId,
     getAllUser,
+    getUserName,
+    getUserEmail,
     createUser,
     updateUser,
     deleteUser

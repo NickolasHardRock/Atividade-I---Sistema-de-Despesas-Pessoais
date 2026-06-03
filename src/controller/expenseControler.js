@@ -7,7 +7,7 @@ import expense,{getAllExpense,
 class ExpenseController {
 
     getAll() {
-        const result = ExpenseModel.getAll();
+        const result = expense.getAllExpense();
         if(result.length === 0){
             throw new Error("Não dados para retornar")
         }
@@ -86,14 +86,14 @@ class ExpenseController {
     }
 
     create(title, amount, category, date, description,usuario) {
-        if (title === "") {
+        if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {
             return new Error("Por favor adicione um gasto");
         }
-        if (category === "") {
-            return new Error("Por favor adicione um titulo");
+        if (!category) {
+            return new Error("Por favor adicione uma categoria");
         }
         if (new Date(date) > new Date()) {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
@@ -101,34 +101,7 @@ class ExpenseController {
 
         const result = createExpense(title, amount, category, date, description, usuario)
 
-        const id = result.id
-
-        const resposta = {
-            ...result,
-            message: "Usuario criado",
-            data:[
-                 {
-                    rel:"self",
-                    method:"POST",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    method:"PUT",
-                    href:"http://localhost:3000/api/v1/Despesas/?id="+id
-                },
-                {
-                    
-                    method:"DELETE",
-                    href:"http://localhost:3000/api/v1/Despesas/?id="+id
-                },
-                {
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id="+id
-                }
-            ]
-        }
-
-        return resposta
+        return result
 
     }
 
@@ -136,7 +109,7 @@ class ExpenseController {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
-        if (title === "") {
+        if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {
@@ -151,28 +124,7 @@ class ExpenseController {
 
         const result = ExpenseModel.update(id, title, amount, category, date, description)
 
-        const resposta = {
-            ...result,
-            message: "Usuario criado",
-            data:[
-                {
-                    rel:"self",
-                    method:"POST",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    method:"DELETE",
-                    href:"http://localhost:3000/api/v1/Despesas/?id="+id
-                },
-                {
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/?id="+id
-                }
-            ]
-        }
-
-
-        return resposta 
+        return result 
 
     }
 
@@ -186,26 +138,7 @@ class ExpenseController {
         const resposta = 
         {
             ...result,
-            message:"Despesa deletada"+id,
-            links:[
-                {
-                    rel:"self",
-                    method:"DELETE",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    method:"POST",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                },
-                {
-                    method:"PUT",
-                    href:"http://localhost:3000/api/v1/Despesas/?id=?"
-                },
-                {
-                    method:"GET",
-                    href:"http://localhost:3000/api/v1/Despesas/"
-                }
-            ]
+            
         }
 
         return ExpenseModel.delete(id)

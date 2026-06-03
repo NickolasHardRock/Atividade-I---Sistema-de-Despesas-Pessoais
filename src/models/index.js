@@ -1,4 +1,4 @@
-import { BelongsTo } from "sequelize";
+import Sequelize from "sequelize";
 import sequelize from "../config/db.js";
 import expense from "./expenseModel.js";
 import user from "./userModel.js";
@@ -10,7 +10,7 @@ user.hasMany(expense,{
     as:'expense'
 });
 
-expense.BelongsTo,{user,
+expense.belongsTo,{user,
     foreignKey:'fk_usuarioId',
     as:'user'
 }

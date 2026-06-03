@@ -35,6 +35,9 @@ const expense = sequelize.define('expense',{
             key:'id'
         }
     }
+},{
+    tableName: 'expense',
+    freezeTableName:true
 })
 
 async function getAllExpense() {
