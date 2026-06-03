@@ -28,23 +28,9 @@ app.put('/api/v1/despesas/:id', ExpenseView.update)
 
 app.delete('/api/v1/despesas/:id', ExpenseView.delete)
 
-<<<<<<< HEAD
 app.get('/api/v1/usuarios')
 
 async function popularBase() {
-=======
-// Usuarios
-
-app.get('/api/v1/usuarios/',UserView.getUser)
-
-app.post('/api/v1/usuarios/',UserView.create)
-
-app.put('/api/v1/usuarios/:id',UserView.update)
-
-app.delete('/api/v1/usuarios/:id', UserView.delete)
-
-async function popularBaseDespesas() {
->>>>>>> 96cdbcce5d91f62d8b89e3fc507a5256aa7ca6b5
 
   // Categoria: Doce
   await ExpenseControler.create("Banoff", 263.33, "Doce", "2026-03-10", "O doce perfeito",1);
@@ -84,6 +70,15 @@ async function popularBaseDespesas() {
 
 }
 
+// Usuarios
+
+app.get('/api/v1/usuarios/',UserView.getUser)
+
+app.post('/api/v1/usuarios/',UserView.create)
+
+app.put('/api/v1/usuarios/:id',UserView.update)
+
+app.delete('/api/v1/usuarios/:id', UserView.delete)
 
 async function popularBaseUsuarios() {
   await UserController.create("Nickolas", "Nickolas@muitoLouco.com","senha123senha")
