@@ -26,9 +26,13 @@ function authMiddleware(req,res,next){
             const path = req.path;
 
             console.log(`Middleware de autenticação: ${method} ${path} - Usuário: ${req.user.email} (Role: ${req.user.role})`);
-            if(path.startsWith('/usuarios'))
+            if(path.startsWith('/usuarios') && req.user.role !== 'admin'){
+                return res.status(403).json({error: 'Acesso negado: apenas administradores podem acessar esta rota'})
+            }
 
-
+            return next()
+        }catch(error){
+            return res.status(401).json({error:'Token inválido ou expirado'})
         }
 
 

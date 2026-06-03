@@ -1,4 +1,6 @@
 import e from "express";
+import jwt from  "jsonwebtoken";
+import authConfig from '../config/auth.js'
 import User, {
     getUserId,
     getAllUser,
@@ -9,8 +11,36 @@ import User, {
     deleteUser
 } from "../models/userModel.js"
 
+
 class UserController {
 
+    replacePassword(password){
+        return '*'.repeat(password.length);
+    }
+
+    mapUser(user){
+        const userData = user.dataValues || user;
+
+        return{
+            ...userData,
+            password: this.replacePassword(userData.password)
+        }
+    }
+
+    mapPublicUser(user){
+        const mapped = this.mapUser(user);
+
+        return{
+            id: mapped.id,
+            name: mapped.name,
+            email: mapped.email,
+        }
+    }
+    
+    async getAll() {
+        return (await User.getAllUser()).map(
+            u => this.mapUser(u))
+    }
     getAll() {
         const result = getAllUser();
         if (result.length === 0) {

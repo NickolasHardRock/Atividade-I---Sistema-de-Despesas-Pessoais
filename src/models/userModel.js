@@ -19,6 +19,11 @@ const user = sequelize.define('user',{
     senha:{
         type:DataTypes.TEXT,
         allowNull:true
+    },
+    role:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'user'
     }
 },{
     tableName:'user',
@@ -45,11 +50,11 @@ async function getUserEmail(email) {
     return await user.find(user => user.email === email)
 }
 
-async function createUser(name,email,senha) {
-    return await user.create({name,email,senha});
+async function createUser(name,email,senha,role) {
+    return await user.create({name,email,senha,role});
 }
 
-async function updateUser(id,name,email,senha) {
+async function updateUser(id,name,email,senha,role) {
     const user = await getUserId(id);
 
     if(!user){
@@ -59,6 +64,7 @@ async function updateUser(id,name,email,senha) {
     user.name = name;
     user.email = email;
     user.senha = senha;
+    user.role = role;
 
     await user.save()
     console.log("Usuario atualizado")
