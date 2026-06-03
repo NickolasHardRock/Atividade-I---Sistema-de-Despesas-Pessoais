@@ -24,6 +24,8 @@ app.put('/api/v1/despesas/:id', ExpenseView.update)
 
 app.delete('/api/v1/despesas/:id', ExpenseView.delete)
 
+app.get('/api/v1/usuarios')
+
 async function popularBase() {
 
   // Categoria: Doce
