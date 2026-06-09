@@ -36,33 +36,53 @@ class UserController {
             email: mapped.email,
         }
     }
+
+    async login(email,password){
+        const user = await User.getUserEmail(email);
+
+        if(!user || user.password !== password){
+            throw new Error('Credenciais inválidas')
+        }
+
+        const token = jwt.sign(
+            {id: user.id, email: user.email, role: user.role},
+            authConfig.jwt.secret,
+            {expiresIn: authConfig.jwt.expiresIn}
+        );
+        return{
+            token,
+            user: this.mapPublicUser(user)
+        };
+
+    }
     
     async getAll() {
-        return (await User.getAllUser()).map(
-            u => this.mapUser(u))
-    }
-    getAll() {
-        const result = getAllUser();
-        if (result.length === 0) {
-            throw new Error("Não dados para retornar")
-        }
-        return result
+        return (await User.getAllUser())
+        .map(u => this.mapUser(u));
     }
 
-    getByid(id) {
+    // getAll() {
+    //     const result = getAllUser();
+    //     if (result.length === 0) {
+    //         throw new Error("Não dados para retornar")
+    //     }
+    //     return result
+    // }
+
+    async getByid(id) {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido");
         }
-        const result = getUserId(id);
+        const result = await  User.getUserId(id)
 
         if (!result) {
             throw new Error("Usuario não encontrado");
         }
 
-        return result
+        return this.mapUser(user);
     }
 
-    getByName(name) {
+    async getByName(name) {
         if (!name) {
             throw new Error("Favor adicionar um parametro válido")
         }
