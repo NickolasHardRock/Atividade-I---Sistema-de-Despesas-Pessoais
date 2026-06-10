@@ -1,0 +1,224 @@
+Atividade Final
+Data de conclusão 30 de junho de 2026 às 23:59
+Backend
+Instruções
+#  Disciplina de Backend
+
+## Objetivo
+Desenvolver uma API RESTful para um sistema de controle de despesas utilizando Node.js, Express, Sequelize e MySQL seguindo o padrão MVC.
+
+---
+
+# Tecnologias Obrigatórias
+
+- Node.js
+- Express
+- Sequelize
+- MySQL
+- JWT
+- bcrypt
+- dotenv (*)
+
+---
+
+# Arquitetura Esperada
+
+```text
+src/
+ ├── controllers/
+ ├── views/
+ ├── models/
+ ├── routes/ (*)
+ ├── middlewares/ (*)
+ ├── config/
+ ├── database/
+ └── app.js
+```
+
+---
+
+# Requisitos Funcionais
+
+## Autenticação
+
+### Cadastro de Usuário
+- Nome
+- Email
+- Senha
+
+### Login
+- JWT
+- Senha criptografada com bcrypt
+
+---
+
+# Entidades
+
+## Usuário
+- id
+- nome
+- email
+- senha
+- createdAt
+- updatedAt
+
+## Categoria
+- id
+- nome
+- descricao
+
+## Despesa
+- id
+- descricao
+- valor
+- data
+- status (`PENDENTE`, `PAGA`)
+- categoriaId
+- usuarioId
+
+---
+
+# Relacionamentos
+
+- Um usuário possui várias despesas
+- Uma categoria possui várias despesas
+- Uma despesa pertence a um usuário
+- Uma despesa pertence a uma categoria
+
+---
+
+# Rotas RESTful
+
+## Auth
+
+```http
+POST /users
+POST /auth/login
+```
+
+## Categorias
+
+```http
+GET /categories
+GET /categories/:id
+POST /categories
+PUT /categories/:id
+DELETE /categories/:id
+```
+
+## Despesas
+
+```http
+GET /expenses
+GET /expenses/:id
+POST /expenses
+PUT /expenses/:id
+DELETE /expenses/:id
+```
+
+---
+
+# Requisitos de Filtros
+
+Implementar filtros por:
+
+- Categoria
+- Status
+- Período
+- Valor mínimo
+- Valor máximo
+
+Exemplo:
+
+```http
+GET /expenses?status=PAGA&categoria=1
+```
+
+---
+
+# APIs Estatísticas Obrigatórias
+
+## Total de Gastos
+
+```http
+GET /dashboard/total-expenses
+```
+
+### Resposta
+
+```json
+{
+  "total": 3500.50
+}
+```
+
+---
+
+## Quantidade de Despesas
+
+```http
+GET /dashboard/expenses-count
+```
+
+### Resposta
+
+```json
+{
+  "quantidade": 45
+}
+```
+
+---
+
+## Gastos por Categoria
+
+```http
+GET /dashboard/expenses-by-category
+```
+
+### Resposta
+
+```json
+[
+  {
+    "categoria": "Alimentação",
+    "total": 1200
+  },
+  {
+    "categoria": "Transporte",
+    "total": 800
+  }
+]
+```
+
+---
+
+# Requisitos Sequelize
+
+Obrigatório:
+
+- Migrations
+- Seeders
+- Associations
+- Validações
+- Query Filters
+
+---
+
+# Segurança
+
+- JWT
+- bcrypt
+- dotenv (*)
+- Middleware de autenticação
+- Tratamento global de erros
+
+---
+
+# Entregáveis
+
+- Repositório GitHub
+- Collection Postman
+- Swagger (*)
+- README
+- Script SQL/Migrations

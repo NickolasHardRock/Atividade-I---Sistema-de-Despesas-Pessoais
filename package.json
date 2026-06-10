@@ -16,7 +16,8 @@
   "main": "./index.js",
   "scripts": {
     "test": "start",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "db:create":"node src/scripts/createDatabase.js"
   },
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
