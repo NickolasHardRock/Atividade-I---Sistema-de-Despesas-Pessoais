@@ -58,7 +58,7 @@ class UserController {
     
     async getAll() {
         return (await User.getAllUser())
-        .map(u => this.mapUser(u));
+        .map(u => this.mapPublicUser(u));
     }
 
     // getAll() {
@@ -73,13 +73,13 @@ class UserController {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido");
         }
-        const result = await  User.getUserId(id)
+        const result = await User.getUserId(id)
 
         if (!result) {
             throw new Error("Usuario não encontrado");
         }
 
-        return this.mapUser(user);
+        return this.mapPublicUser(result);
     }
 
     async getByName(name) {
@@ -87,35 +87,35 @@ class UserController {
             throw new Error("Favor adicionar um parametro válido")
         }
 
-        const result = getUserName(name)
+        const result = await User.getUserName(name)
 
         if (!result) {
             throw new Error("Usuario não encontrado")
         }
 
-        return result
+        return this.mapPublicUser(result)
 
     }
 
-    getByEmail(email) {
+    async getByEmail(email) {
 
-        const regexEmail = new RegExp(/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/)
-
+        const regexEmail = new RegExp('/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/')
+  
         if (email == regexEmail.test(email)) {
             throw new Error("Favor adicionar um email válido")
         }
 
-        const result = getUserEmail(email)
+        const result = await User.getUserEmail(email)
 
         if (!email) {
             throw new Error("Email não encontrado")
         }
 
-        return result
+        return this.mapPublicUser(result)
 
     }
 
-    create(name, email, senha) {
+    async create(name, email, senha,role) {
         if (!name) {
             throw new Error("Favor adicione um nome");
         }
@@ -126,29 +126,33 @@ class UserController {
             throw new Error("Favor adicione um email válido");
         }
 
-        if (!senha) {
-            throw new Error("Favor adicione uma senha")
+        if (!senha && senha.length < 6) {
+            throw new Error("Favor adicione uma senha válida")
         }
 
-        return createUser(name, email, senha)
+        const user = await User.createUser(name,email,senha,role);
+        return {...user, password: this.replacePassword(user.password)};
 
     }
 
-    update(id, name, email, senha) {
+    update(id, name, email, senha,role) {
         if (!id) {
             throw new Error("Por favor adicione um id válido");
         }
         if (!name) {
             throw new Error("Por favor adicione um name válido")
         }
-        if (!email) {
-            throw new Error("Por favor adicione um email válido")
+        const regexEmail = new RegExp('/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/')
+
+        if (!email && regexEmail.test(email)) {
+            throw new Error("Favor adicione um email válido");
         }
-        if (!senha) {
-            throw new Error("Por favor adicione uma senha válida")
+        if (!senha && senha.length < 6) {
+            throw new Error("Favor adicione uma senha válida")
         }
 
-        return updateUser(id, name, email, senha);
+        const user = await User.updateUser(id,name,email,senha,role);
+        return{...user, password: this.replacePassword(user.password)};
 
     }
 
@@ -157,7 +161,7 @@ class UserController {
             throw new Error("Por favor adicione um id válido");
         }
 
-        return deleteUser(id)
+        return User.deleteUser(id);
     }
 }
 
