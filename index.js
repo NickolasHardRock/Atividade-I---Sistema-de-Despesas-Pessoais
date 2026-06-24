@@ -3,8 +3,8 @@ import ExpenseView from './src/view/expenseView.js';
 import UserView from './src/view/userView.js';
 import ExpenseControler from './src/controller/expenseControler.js';
 import UserController from './src/controller/userController.js';
-import sequelize from './src/config/db.js';
-import {user,expense,initModels } from './src/models/index.js';
+import { sequelize } from './src/config/db.js';
+// import {user,expense,initModels } from './src/models/index.js';
 
 const app = express();
 
@@ -91,7 +91,7 @@ async function main() {
     await sequelize.sync({force: true })
     console.log('Conexão com o banco de dados estabelecida com sucesso.')
     await popularBaseUsuarios()
-    await popularBaseDespesas()
+    //await popularBaseDespesas()
     app.listen(PORT, () => {
       console.log("Servidor foi iniciado na porta:", PORT);
     });

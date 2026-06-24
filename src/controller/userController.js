@@ -130,12 +130,12 @@ class UserController {
             throw new Error("Favor adicione uma senha válida")
         }
 
-        const user = await User.createUser(name,email,senha,role);
-        return {...user, password: this.replacePassword(user.password)};
+        const { dataValues: user } = await User.create({ name,email,senha,role });
+        return {...user, password: this.replacePassword(user.senha)};
 
     }
 
-    update(id, name, email, senha,role) {
+    async update(id, name, email, senha,role) {
         if (!id) {
             throw new Error("Por favor adicione um id válido");
         }

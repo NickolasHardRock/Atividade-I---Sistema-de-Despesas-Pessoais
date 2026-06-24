@@ -3,7 +3,6 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-
 const createDatabase = async () =>{
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,

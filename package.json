@@ -17,9 +17,10 @@
   "scripts": {
     "test": "start",
     "dev": "nodemon src/index.js",
-    "db:create":"node src/scripts/createDatabase.js"
+    "db:create": "node src/scripts/createDatabase.js"
   },
   "dependencies": {
+    "@sequelize/mysql": "^7.0.0-alpha.48",
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

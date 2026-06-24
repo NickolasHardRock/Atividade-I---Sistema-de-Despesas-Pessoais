@@ -1,33 +1,30 @@
-import sequelize from "../config/db.js";
+import { sequelize } from "../config/db.js";
 import { DataTypes } from "sequelize";
 
-const user = sequelize.define('user',{
+const user = sequelize.define('users',{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
     name:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true
     },
     email:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true,
         unique:true
     },
     senha:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true
     },
     role:{
-        type: DataTypes.ENUM('admin','user'),
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'user'
     }
-},{
-    tableName:'user',
-    freezeTableName:true
 })
 
 async function getAllUser() {

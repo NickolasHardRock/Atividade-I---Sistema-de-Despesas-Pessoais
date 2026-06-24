@@ -1,22 +1,22 @@
-import sequelize from "../config/db.js";
+import { sequelize } from "../config/db.js";
 import { DataTypes } from "sequelize";
 
-const expense = sequelize.define('expense',{
+const expense = sequelize.define('expenses',{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
     title:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:false
     },
     amount:{
-        type:DataTypes.DECIMAL,
+        type:DataTypes.DECIMAL(10,2),
         allowNull:false
     },
     category:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:false
     },
     date:{
@@ -24,20 +24,17 @@ const expense = sequelize.define('expense',{
         allowNull:false
     },
     description:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true
     },
-    fk_usuarioId:{
+    fkUsuarioId:{
         type:DataTypes.INTEGER,
         allowNull:true,
         references:{
-            model:'user',
+            model:'users',
             key:'id'
         }
     }
-},{
-    tableName: 'expense',
-    freezeTableName:true
 })
 
 async function getAllExpense() {
