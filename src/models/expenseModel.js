@@ -1,38 +1,49 @@
 import { sequelize } from "../config/db.js";
 import { DataTypes } from "sequelize";
 
-const expense = sequelize.define('expenses',{
-    id:{
-        type:DataTypes.INTEGER,
-        primaryKey:true,
-        autoIncrement:true
+const expense = sequelize.define('expenses', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    title:{
-        type:DataTypes.STRING,
-        allowNull:false
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    amount:{
-        type:DataTypes.DECIMAL(10,2),
-        allowNull:false
+    amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
     },
-    category:{
-        type:DataTypes.STRING,
-        allowNull:false
+    category: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    date:{
-        type:DataTypes.DATE,
-        allowNull:false
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
     },
-    description:{
-        type:DataTypes.STRING,
-        allowNull:true
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
-    fkUsuarioId:{
-        type:DataTypes.INTEGER,
-        allowNull:true,
-        references:{
-            model:'users',
-            key:'id'
+    status: {
+        type: DataTypes.ENUM('PENDENTE', 'PAGA')
+    },
+    fkUsuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+        }
+    },
+    fkCategoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'category',
+            key: 'id'
         }
     }
 })
@@ -45,14 +56,14 @@ async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
-async function createExpense(title,amount,category,date,describe,fk_usuarioId) {
-    return await expense.create({title,amount,category,date,describe,fk_usuarioId});
+async function createExpense(title, amount, category, date, description, fkUsuarioId) {
+    return await expense.create({ title, amount, category, date, description, fkUsuarioId });
 }
 
-async function updateExpense(id,title,amount,category,date,describe,usuario) {
+async function updateExpense(id, title, amount, category, date, description, usuario) {
     const expense = await getExpenseId(id);
 
-    if(!expense){
+    if (!expense) {
         throw new Error("Despesa não encontrada")
     }
 
@@ -60,7 +71,7 @@ async function updateExpense(id,title,amount,category,date,describe,usuario) {
     expense.amount = amount;
     expense.category = category;
     expense.date = date;
-    expense.describe = describe;
+    expense.description = description;
     expense.fk_usuarioId = usuario;
 
     await expense.save()
@@ -71,7 +82,7 @@ async function updateExpense(id,title,amount,category,date,describe,usuario) {
 async function deleteExpense(id) {
     const expense = await getExpenseId(id);
 
-    if(!expense){
+    if (!expense) {
         throw new Error("Adicione um id");
     }
 
@@ -90,64 +101,66 @@ export {
 }
 
 
-// class Expense{
-//     constructor(){
-//         this.expenses = []
-//     }
+class Expense {
+    constructor() {
+        this.expenses = []
+    }
 
-//     getAll(){
-//         return this.expenses;
-//     }
+    getAll() {
+        return this.expenses;
+    }
 
-//     getById(id){
-//         return this.expenses.find(u => u.id === id );
-//     }
 
-//     create(title,amount,category,date,description){
-//         const newExpens = {
-//             id: Math.floor(Math.random() * Math.floor(999999)),
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description,
-//             createdAt: new Date()
-//         }
+    getById(id) {
+        return this.expenses.find(u => u.id === id);
+    }
 
-//         this.expenses.push(newExpens)
-//         return newExpens;
-//     }
 
-//     update(id,title,amount,category,date,description){
-//         const index = this.expenses.findIndex(u => u.id === id)
+    create(title, amount, category, date, description) {
 
-//         if (index === -1) {
-//             return null;
-//         };
+        const newExpens = {
 
-//         this.expenses[index] = {
-//             ...this.expenses[index], // Copia todas as propriedades do objeto na posição index
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description
-//         }
+            id: Math.floor(Math.random() * Math.floor(999999)),
+            title,
+            amount,
+            category,
+            date,
+            description,
+            createdAt: new Date()
+        }
 
-//         return this.expenses[index];
-//     }
+        this.expenses.push(newExpens)
+        return newExpens;
+    }
 
-//     delete(id){
-//         const index = this.expenses.findIndex(u => u.id === id)
-//         if(index === -1){
-//             return null
-//         }
+    update(id, title, amount, category, date, description) {
+        const index = this.expenses.findIndex(u => u.id === id)
 
-//         this.expenses.splice(index,1);
+        if (index === -1) {
+            return null;
+        };
 
-//         return null
+        this.expenses[index] = {
+            ...this.expenses[index],
+            title,
+            amount,
+            category,
+            date,
+            description
+        }
 
-//     }
-// }
+        return this.expenses[index];
+    }
 
-// export default new Expense();
+    delete(id) {
+        const index = this.expenses.findIndex(u => u.id === id)
+        if (index === -1) {
+            return null
+        }
+
+        this.expenses.splice(index, 1);
+
+        return null
+
+    }
+}

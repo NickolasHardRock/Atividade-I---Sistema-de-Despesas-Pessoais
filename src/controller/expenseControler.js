@@ -7,7 +7,7 @@ import expense,{getAllExpense,
 class ExpenseController {
 
     getAll() {
-        const result = expense.getAllExpense();
+        const result = getAllExpense();
         if(result.length === 0){
             throw new Error("Não dados para retornar")
         }
@@ -85,7 +85,7 @@ class ExpenseController {
 
     }
 
-    create(title, amount, category, date, description,usuario) {
+    async create(title, amount, category, date, description, usuario) {
         if (!title) {
             return new Error("Por favor adicione um titulo");
         }
@@ -99,9 +99,9 @@ class ExpenseController {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
 
-        const result = createExpense(title, amount, category, date, description, usuario)
+        const  result =  createExpense(title, amount, category, date, description, usuario)
 
-        return result
+        return await result
 
     }
 

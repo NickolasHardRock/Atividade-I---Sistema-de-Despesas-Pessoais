@@ -11,12 +11,12 @@ Desenvolver uma API RESTful para um sistema de controle de despesas utilizando N
 
 # Tecnologias Obrigatórias
 
-- Node.js
-- Express
-- Sequelize
-- MySQL
-- JWT
-- bcrypt
+- Node.js FEITO
+- Express FEITO
+- Sequelize FEITO
+- MySQL FEITO
+- JWT Já possuo codado mas ainda não implementado
+- bcrypt Já possuo codado mas ainda não implementado
 - dotenv (*)
 
 ---
@@ -25,14 +25,14 @@ Desenvolver uma API RESTful para um sistema de controle de despesas utilizando N
 
 ```text
 src/
- ├── controllers/
- ├── views/
- ├── models/
- ├── routes/ (*)
- ├── middlewares/ (*)
- ├── config/
- ├── database/
- └── app.js
+ ├── controllers/ FEITO
+ ├── views/ FEITO
+ ├── models/ FEITO
+ ├── routes/ (*) posso fazer
+ ├── middlewares/ (*) Já possuo codado mas ainda não implementado
+ ├── config/ FEITO
+ ├── database/ FEITO
+ └── app.js FEITO
 ```
 
 ---
@@ -41,12 +41,12 @@ src/
 
 ## Autenticação
 
-### Cadastro de Usuário
-- Nome
+### Cadastro de Usuário FEITO
+- Nome 
 - Email
-- Senha
+- Senha 
 
-### Login
+### Login Ainda preciso implementar
 - JWT
 - Senha criptografada com bcrypt
 
@@ -54,7 +54,7 @@ src/
 
 # Entidades
 
-## Usuário
+## Usuário FEITO
 - id
 - nome
 - email
@@ -62,12 +62,12 @@ src/
 - createdAt
 - updatedAt
 
-## Categoria
+## Categoria FEITO
 - id
 - nome
 - descricao
 
-## Despesa
+## Despesa FEITO
 - id
 - descricao
 - valor
@@ -78,12 +78,12 @@ src/
 
 ---
 
-# Relacionamentos
+# Relacionamentos FEITO
 
-- Um usuário possui várias despesas
-- Uma categoria possui várias despesas
-- Uma despesa pertence a um usuário
-- Uma despesa pertence a uma categoria
+- Um usuário possui várias despesas FEITO
+- Uma categoria possui várias despesas FEITO
+- Uma despesa pertence a um usuário FEITO
+- Uma despesa pertence a uma categoria FEITO
 
 ---
 
