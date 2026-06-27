@@ -6,29 +6,29 @@ import expense,{getAllExpense,
 
 class ExpenseController {
 
-    getAll() {
-        const result = getAllExpense();
+   async getAll() {
+        const result = await getAllExpense();
         if(result.length === 0){
             throw new Error("Não dados para retornar")
         }
-        return result
+        return  result
     }
 
 
-    getById(id) {
+    async getById(id) {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido")
         }
-        const result = ExpenseModel.getById(id);
+        const  result = await getExpenseId(id);
 
         if(!result){
             throw new Error("Despesas não encontrada")
         }
 
-        return result
+        return  result
     }
 
-    getByCategory(category) {
+    async getByCategory(category) {
 
         const result = ExpenseModel.getAll().filter(u => u.category === category)
         console.log(result)
@@ -40,19 +40,19 @@ class ExpenseController {
             throw new Error("Favor informar categoria válida")
         }
 
-        return result
+         return await result
     }
 
-    getByDate(date) {
+    async getByDate(date) {
         const result = ExpenseModel.getAll().filter(u => u.date === date)
         if (result.length === 0) {
             throw new Error("Favor informar data válida")
         }
 
-        return result
+        return await result
     }
 
-    summary() {
+    async summary() {
         
         const count = ExpenseModel.getAll().reduce((count ,u) => {
             return count + u.amount
@@ -62,10 +62,10 @@ class ExpenseController {
             throw new Error("Não a despesas, para resumir")
         }
 
-        return count;
+        return await count;
     }
 
-    summaryCategory(category) {
+    async summaryCategory(category) {
         result = ExpenseModel.getAll()
             .filter(u => u.category === category)
             .reduce((count, u) => {
@@ -81,31 +81,38 @@ class ExpenseController {
             throw new Error("Não a despesas, para resumir")
         }
 
-        return result
+        return await result
 
     }
 
-    async create(title, amount, category, date, description, usuario) {
+    async create(title, amount, date, description, status, fkUsuarioId, fkCategoryId) {
         if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {
             return new Error("Por favor adicione um gasto");
         }
-        if (!category) {
-            return new Error("Por favor adicione uma categoria");
-        }
         if (new Date(date) > new Date()) {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
+        if(!status == "PAGA" || !status =="PENDENTE"){
+            return new Error("Por favor escolha entre PAGA ou PENDENTE")
+        }
+        if(!fkUsuarioId){
+            return new Error("Adicione um usuario");
+        }
+        if(!fkCategoryId){
+            return new Error("Adicione uma categoria ")
+        }
 
-        const  result =  createExpense(title, amount, category, date, description, usuario)
+        const  result =  await createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId)
+        console.log(result);
 
-        return await result
+        return  result
 
     }
 
-    update(id, title, amount, category, date, description) {
+    async update(id, title, amount, category, date, description) {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
@@ -122,26 +129,21 @@ class ExpenseController {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
 
-        const result = ExpenseModel.update(id, title, amount, category, date, description)
+        const result = await updateExpense(id, title, amount, category, date, description)
 
         return result 
 
     }
 
-    delete(id) {
+    async delete(id) {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
 
-        const result = ExpenseModel.delete(id)
+        const result = await deleteExpense(id)
         
-        const resposta = 
-        {
-            ...result,
-            
-        }
 
-        return ExpenseModel.delete(id)
+        return  result
 
     }
 

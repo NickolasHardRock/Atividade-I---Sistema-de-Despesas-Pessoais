@@ -15,10 +15,6 @@ const expense = sequelize.define('expenses', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
-    category: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     date: {
         type: DataTypes.DATE,
         allowNull: false
@@ -48,16 +44,16 @@ const expense = sequelize.define('expenses', {
     }
 })
 
-async function getAllExpense() {
-    return await expense.findAll();
+ async function getAllExpense() {
+    return await  expense.findAll();
 }
 
 async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
-async function createExpense(title, amount, category, date, description, fkUsuarioId) {
-    return await expense.create({ title, amount, category, date, description, fkUsuarioId });
+async function createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId) {
+    return await expense.create({ title, amount, date, description, status, fkUsuarioId, fkCategoryId });
 }
 
 async function updateExpense(id, title, amount, category, date, description, usuario) {
@@ -101,66 +97,66 @@ export {
 }
 
 
-class Expense {
-    constructor() {
-        this.expenses = []
-    }
+// class Expense {
+//     constructor() {
+//         this.expenses = []
+//     }
 
-    getAll() {
-        return this.expenses;
-    }
-
-
-    getById(id) {
-        return this.expenses.find(u => u.id === id);
-    }
+//     getAll() {
+//         return this.expenses;
+//     }
 
 
-    create(title, amount, category, date, description) {
+//     getById(id) {
+//         return this.expenses.find(u => u.id === id);
+//     }
 
-        const newExpens = {
 
-            id: Math.floor(Math.random() * Math.floor(999999)),
-            title,
-            amount,
-            category,
-            date,
-            description,
-            createdAt: new Date()
-        }
+//     create(title, amount, category, date, description) {
 
-        this.expenses.push(newExpens)
-        return newExpens;
-    }
+//         const newExpens = {
 
-    update(id, title, amount, category, date, description) {
-        const index = this.expenses.findIndex(u => u.id === id)
+//             id: Math.floor(Math.random() * Math.floor(999999)),
+//             title,
+//             amount,
+//             category,
+//             date,
+//             description,
+//             createdAt: new Date()
+//         }
 
-        if (index === -1) {
-            return null;
-        };
+//         this.expenses.push(newExpens)
+//         return newExpens;
+//     }
 
-        this.expenses[index] = {
-            ...this.expenses[index],
-            title,
-            amount,
-            category,
-            date,
-            description
-        }
+//     update(id, title, amount, category, date, description) {
+//         const index = this.expenses.findIndex(u => u.id === id)
 
-        return this.expenses[index];
-    }
+//         if (index === -1) {
+//             return null;
+//         };
 
-    delete(id) {
-        const index = this.expenses.findIndex(u => u.id === id)
-        if (index === -1) {
-            return null
-        }
+//         this.expenses[index] = {
+//             ...this.expenses[index],
+//             title,
+//             amount,
+//             category,
+//             date,
+//             description
+//         }
 
-        this.expenses.splice(index, 1);
+//         return this.expenses[index];
+//     }
 
-        return null
+//     delete(id) {
+//         const index = this.expenses.findIndex(u => u.id === id)
+//         if (index === -1) {
+//             return null
+//         }
 
-    }
-}
+//         this.expenses.splice(index, 1);
+
+//         return null
+
+//     }
+// }
