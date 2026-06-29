@@ -29,7 +29,7 @@ src/
  ├── views/ FEITO
  ├── models/ FEITO
  ├── routes/ (*) posso fazer
- ├── middlewares/ (*) Já possuo codado mas ainda não implementado
+ ├── middlewares/ (*) FEITO
  ├── config/ FEITO
  ├── database/ FEITO
  └── app.js FEITO
@@ -46,7 +46,7 @@ src/
 - Email
 - Senha 
 
-### Login Ainda preciso implementar
+### Login FEITO
 - JWT
 - Senha criptografada com bcrypt
 
@@ -89,14 +89,14 @@ src/
 
 # Rotas RESTful
 
-## Auth
+## Auth FEITO
 
 ```http
 POST /users
 POST /auth/login
 ```
 
-## Categorias
+## Categorias FEITO
 
 ```http
 GET /categories
@@ -106,14 +106,14 @@ PUT /categories/:id
 DELETE /categories/:id
 ```
 
-## Despesas
+## Despesas FEITO
 
 ```http
-GET /expenses
-GET /expenses/:id
-POST /expenses
-PUT /expenses/:id
-DELETE /expenses/:id
+GET /expenses 
+GET /expenses/:id 
+POST /expenses 
+PUT /expenses/:id 
+DELETE /expenses/:id 
 ```
 
 ---

@@ -2,13 +2,16 @@ import UserController from "../controller/userController.js";
 
 class UserView {
 
-    getUser(req, res) {
+    async getUser(req, res) {
         const { id, name, email } = req.query
-        console.log(req.query)
+        const getAll = await UserController.getAll()
         try {
             if (id) {
-                return res.status(200).json(UserController.getByid(Number(id)), {
-                    data: [
+                const getId = await UserController.getByid(Number(id))
+                res.status(200).json({
+                message: "Usuario id "+ id,
+                data: getId,
+                links: [
                         {
                             rel: "self",
                             method: "GET",
@@ -29,7 +32,7 @@ class UserView {
                             href: "http://localhost:3000/api/v1/usuarios/?email"
                         }
                     ]
-                })
+            })
             }
 
             if (name) {
@@ -82,9 +85,11 @@ class UserView {
                     ]
                 })
             }
-
-            return res.status(200).json(UserController.getAll(), {
-                data: [
+            
+            res.status(200).json({
+                message: "Usuarios da base",
+                data: getAll,
+                links: [
                     {
                         rel: "self",
                         method: "GET",
@@ -124,13 +129,20 @@ class UserView {
         }
     }
 
-    create(req, res) {
+     async createUser(req, res) {
         try {
-            const { name, email, senha } = req.body
-            const NewUser = UserController.create(name, email, senha)
-            res.status(201).json(NewUser), {
-                message: "Usuario criada",
-                data: [
+            const { name, email, password, role } = req.body
+            
+            if(!name || !email || !password || !role){
+                return res.status(400).json({error: 'Nome, Email, Senha e Perfil são obrigatórios'});
+            }
+            
+            const NewUser = await UserController.create(name, email, password, role)
+
+            res.status(201).json({
+                message: "Usuario criado",
+                data: NewUser,
+                links: [
                     {
                         rel: "self",
                         method: "POST",
@@ -138,22 +150,36 @@ class UserView {
                     },
                     {
                         method: "PUT",
-                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                        href: "http://localhost:3000/api/v1/usuarios/?id="
                     },
                     {
 
                         method: "DELETE",
-                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" 
                     },
                     {
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" 
                     }
                 ]
-            }
+            })
         } catch (error) {
             return res.status(400).json({ message: error.message })
         }
+    }
+
+    async login(req,res) {
+        const {email,password} = req.body;
+
+        if(!email || !password){
+            return res.status(400).json({error: 'Email e senha são obrigatórios'});
+        }
+
+        const auth = await UserController.login(email,password);
+        return res.json(auth);
+    }catch(error){
+        console.error("Erro em login user:",error);
+        return res.status(401).json({error: error.message});
     }
 
     update(req, res) {
@@ -172,11 +198,11 @@ class UserView {
                     },
                     {
                         method: "DELETE",
-                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" 
                     },
                     {
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/usuarios/?id=" + id
+                        href: "http://localhost:3000/api/v1/usuarios/?id=" 
                     }
                 ]
             }

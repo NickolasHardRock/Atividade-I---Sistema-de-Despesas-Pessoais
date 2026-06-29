@@ -105,8 +105,7 @@ class ExpenseController {
             return new Error("Adicione uma categoria ")
         }
 
-        const  result =  await createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId)
-        console.log(result);
+        const  result =  await createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId);
 
         return  result
 

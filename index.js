@@ -1,8 +1,8 @@
 import express from 'express'
-// import UserView from './src/view/userView.js';
-// import ExpenseControler from './src/controller/expenseControler.js';
-// import UserController from './src/controller/userController.js';
+import UserView from './src/view/userView.js';
 import expenseView from './src/view/expenseView.js';
+import categoriaView from './src/view/categoriaView.js';
+import authMiddleware from './src/middleware/auth.js'
 import { sequelize } from './src/config/db.js';
 import './src/models/index.js';
 
@@ -19,24 +19,40 @@ app.get('/', (req, res) => {
   res.send("Olá Mundo!");
 })
 
+// Usuarios
+
+app.post('/api/v1/usuarios/login',UserView.login)
+
+app.post('/api/v1/usuarios/',UserView.createUser)
+
+app.get('/api/v1/usuarios/',authMiddleware,UserView.getUser)
+
+
+
 // Expenses
 
-app.get('/api/v1/despesas', await expenseView.getExpense)
+app.get('/api/v1/despesas',  expenseView.getExpense)
 
-app.post('/api/v1/despesas/', await expenseView.createExpense)
+app.post('/api/v1/despesas/',  expenseView.createExpense)
 
-app.put('/api/v1/despesas/:id', await expenseView.updateExpense)
+app.put('/api/v1/despesas/:id',  expenseView.updateExpense)
 
-app.delete('/api/v1/despesas/:id', await expenseView.deleteExpense)
+app.delete('/api/v1/despesas/:id',  expenseView.deleteExpense)
 
-app.get('/api/v1/usuarios')
+// Categoria
+
+app.get('/api/v1/categoria', categoriaView.getCategory)
+
+app.get('/api/v1/categoria/:id', categoriaView.getCategory)
+
+app.post('/api/v1/categoria',categoriaView.createCategory)
+
+app.put('/api/v1/categoria/:id',categoriaView.updateCategory)
+
+app.delete('/api/v1/categoria/:id',categoriaView.deleteCategory)
 
 
-// // Usuarios
 
-// app.get('/api/v1/usuarios/',UserView.getUser)
-
-// app.post('/api/v1/usuarios/',UserView.create)
 
 // app.put('/api/v1/usuarios/:id',UserView.update)
 

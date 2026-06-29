@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import {sequelize} from "../config/db.js";
 import expense from "./expenseModel.js";
 import user from "./userModel.js";
-import category from "./categoriaModel.js";
+import category from "./categoryModel.js";
 
 const initModels = () => {
 

@@ -1,6 +1,7 @@
 import e from "express";
 import jwt from  "jsonwebtoken";
 import authConfig from '../config/auth.js'
+import bcrypt, { hash } from "bcrypt"
 import User, {
     getUserId,
     getAllUser,
@@ -11,8 +12,10 @@ import User, {
     deleteUser
 } from "../models/userModel.js"
 
+const saltRounds = 10;
 
 class UserController {
+
 
     replacePassword(password){
         return '*'.repeat(password.length);
@@ -34,15 +37,22 @@ class UserController {
             id: mapped.id,
             name: mapped.name,
             email: mapped.email,
+            password: mapped.password
         }
     }
 
     async login(email,password){
-        const user = await User.getUserEmail(email);
+        const user = await getUserEmail(email);
 
-        if(!user || user.password !== password){
-            throw new Error('Credenciais inválidas')
+        if(!user.name){
+            throw new Error('Usuário não encontrado');
         }
+
+        const isMatch = await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            throw new Error('Senha inválida')
+        }
+       
 
         const token = jwt.sign(
             {id: user.id, email: user.email, role: user.role},
@@ -57,23 +67,18 @@ class UserController {
     }
     
     async getAll() {
-        return (await User.getAllUser())
-        .map(u => this.mapPublicUser(u));
-    }
 
-    // getAll() {
-    //     const result = getAllUser();
-    //     if (result.length === 0) {
-    //         throw new Error("Não dados para retornar")
-    //     }
-    //     return result
-    // }
+        const usersAll = await getAllUser();
+        const result = usersAll.map(u => this.mapPublicUser(u));
+
+        return result
+    }
 
     async getByid(id) {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido");
         }
-        const result = await User.getUserId(id)
+        const result = await getUserId(id)
 
         if (!result) {
             throw new Error("Usuario não encontrado");
@@ -115,34 +120,39 @@ class UserController {
 
     }
 
-    async create(name, email, senha,role) {
+    async create(name, email, password, role) {
         if (!name) {
             throw new Error("Favor adicione um nome");
         }
 
-        const regexEmail = new RegExp('/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/')
-
-        if (!email && regexEmail.test(email)) {
-            throw new Error("Favor adicione um email válido");
+         if (email.length < 5 || !email.includes('@')) {
+            throw new Error('O email deve conter pelo menos 5 caracteres e incluir um "@"');
         }
 
-        if (!senha && senha.length < 6) {
+        if (!password || password.length < 6) {
             throw new Error("Favor adicione uma senha válida")
         }
+        if(role !== "Admin" && role !== "user"){
+            throw new Error("Escolha um perfil válido (Admin / user)")
+        }
 
-        const { dataValues: user } = await User.create({ name,email,senha,role });
-        return {...user, password: this.replacePassword(user.senha)};
+        const hashedPassword = await bcrypt.hash(password,saltRounds);
+
+        console.log(hashedPassword)
+
+        const { dataValues: user } = await createUser( name,email,hashedPassword,role );
+        return {...user, password: this.replacePassword(user.password)};
 
     }
 
-    async update(id, name, email, senha,role) {
+    async update(id, name, email, password,role) {
         if (!id) {
             throw new Error("Por favor adicione um id válido");
         }
         if (!name) {
             throw new Error("Por favor adicione um name válido")
         }
-        const regexEmail = new RegExp('/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/')
+        const regexEmail = new RegExp(/^[a-zA-Z0–9._%+-]+@[a-zA-Z0–9.-]+\.[a-zA-Z]{2,}$/)
 
         if (!email && regexEmail.test(email)) {
             throw new Error("Favor adicione um email válido");

@@ -138,7 +138,7 @@ class ExpenseView {
 
         }
         catch (error) {
-            return res.status(400).json({ error: error.message + " chegou aqui" })
+            return res.status(400).json({ error: error.message })
         }
     }
 
@@ -155,16 +155,16 @@ class ExpenseView {
                 links: [
                     {
                         rel: "self",
-                        method: "POST",
-                        href: "http://localhost:3000/api/v1/despesas/"
+                        method: "PUT",
+                        href: "http://localhost:3000/api/v1/despesas/?id="
                     },
                     {
                         method: "DELETE",
-                        href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                        href: "http://localhost:3000/api/v1/despesas/?id="
                     },
                     {
                         method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?id=" + id
+                        href: "http://localhost:3000/api/v1/despesas/?id="
                     }
                 ]
             })
@@ -173,9 +173,9 @@ class ExpenseView {
         }
     }
 
-    deleteExpense(req, res) {
+    async deleteExpense(req, res) {
         try {
-            const expenseDelete = ExpenseController.delete(Number(req.params.id))
+            const expenseDelete = await ExpenseController.delete(Number(req.params.id))
             res.status(204).json({
                 message: "Despasa Deletada",
                 data: expenseDelete,

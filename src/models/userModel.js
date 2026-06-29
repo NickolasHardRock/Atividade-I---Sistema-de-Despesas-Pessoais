@@ -16,7 +16,7 @@ const user = sequelize.define('users',{
         allowNull:true,
         unique:true
     },
-    senha:{
+    password:{
         type:DataTypes.STRING,
         allowNull:true
     },
@@ -42,16 +42,14 @@ async function getUserName(name) {
 }
 
 async function getUserEmail(email) {
-    const user = await user.findAll()
-
-    return await user.find(user => user.email === email)
+    return await user.findOne({where:{email}})
 }
 
-async function createUser(name,email,senha,role) {
-    return await user.create({name,email,senha,role});
+async function createUser(name,email,password,role) {
+    return await user.create({name,email,password,role});
 }
 
-async function updateUser(id,name,email,senha,role) {
+async function updateUser(id,name,email,password,role) {
     const user = await getUserId(id);
 
     if(!user){
@@ -60,7 +58,7 @@ async function updateUser(id,name,email,senha,role) {
 
     user.name = name;
     user.email = email;
-    user.senha = senha;
+    user.password = password;
     user.role = role;
 
     await user.save()
