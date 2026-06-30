@@ -3,21 +3,10 @@ import ExpenseController from "../controller/expenseControler.js"
 
 class ExpenseView {
 
-    //  getExpense(req,res){
-    //     try {
-    //         const expense =  ExpenseController.getAll();
-    //         console.log("Chegou aqui 1")
-    //         return res.status(200).json(expense);
-    //     } catch (error) {
-    //         console.log("Chegou aqui 2")
-    //         return res.status(500).json({messagem: 'Erro ao buscar despesas' + error.message})
-    //     }
-    // }
-
 
     async getExpense(req, res) {
-        const { id, amount, category, date, description, summary } = req.query
-    
+        const { id, amount, categoryId , date, description, summary,status,fkUsuarioId } = req.query
+
         try {
             if (id) {
                 const result = await ExpenseController.getById(Number(id))
@@ -57,49 +46,87 @@ class ExpenseView {
                         }
                     ]
                 })
+            }    
+
+            if (fkUsuarioId) {
+                const result = await ExpenseController.getByWhere({ fkUsuarioId })
+                return res.status(200).json({
+                    message: "Despesas por Usuario",
+                    data: result,
+                    links: [
+                        { rel: "self", method: "GET", href: "http://localhost:3000/api/v1/despesas/?category=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?id=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?summary=true" }
+                    ]
+                })
             }
-            const result = await ExpenseController.getAll()
-            return await res.status(200).json({
-                message: "Todas as Despesas",
-                data: result,
-                links: [
-                    {
-                        rel: "self",
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesass/"
-                    },
-                    {
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?id=?"
-                    },
-                    {
 
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?category=?"
-                    },
-                    {
+            if (date) {
+                const result = await ExpenseController.getByWhere({ date })
+                return res.status(200).json({
+                    message: "Despesas por Data",
+                    data: result,
+                    links: [
+                        { rel: "self", method: "GET", href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?id=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?category=?" }
+                    ]
+                })
+            }
 
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD"
-                    },
-                    {
+            if (status) {
+                const result = await ExpenseController.getByWhere({ status });
+                return res.status(200).json({
+                    message: "Despesas por Status",
+                    data: result,
+                    links: [
+                        { rel: "self", method: "GET", href: "http://localhost:3000/api/v1/despesas/?status=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?id=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?category=?" }
+                    ]
+                });
+            }
 
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?summary=true"
-                    },
-                    {
 
-                        method: "GET",
-                        href: "http://localhost:3000/api/v1/despesas/?category=?&summary=true"
-                    }
-                ]
+            if (categoryId) {
+                const result = await ExpenseController.getByWhere({ fkCategoryId: Number(categoryId) });
+                
+                if (!result || result.length === 0) {
+            return res.status(404).json({
+                message: "Nenhuma despesa encontrada para essa categoria",
+                data: []
+            });
+        }
+                
+                return res.status(200).json({
+                    message: "Despesas por Categoria",
+                    data: result,
+                    links: [
+                        { rel: "self", method: "GET", href: "http://localhost:3000/api/v1/despesas/?fkUsuarioId=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?id=?" },
+                        { method: "GET", href: "http://localhost:3000/api/v1/despesas/?category=?" }
+                    ]
+                });
+            }
 
-            })
+            const result = await ExpenseController.getAll();
+        return res.status(200).json({
+            message: "Todas as Despesas",
+            data: result,
+            links: [
+                { rel: "self", method: "GET", href: "http://localhost:3000/api/v1/despesas/" },
+                { method: "GET", href: "http://localhost:3000/api/v1/despesas/?id=?" },
+                { method: "GET", href: "http://localhost:3000/api/v1/despesas/?category=?" },
+                { method: "GET", href: "http://localhost:3000/api/v1/despesas/?date=YYYY-MM-DD" },
+                { method: "GET", href: "http://localhost:3000/api/v1/despesas/?summary=true" }
+            ]
+        })
 
 
         } catch (error) {
             if (id) {
-                return res.status(404).json({ error: error.message });
+                return res.status(404).json({ error: error.message});
             }
 
             return res.status(400).json({ error: error.message })

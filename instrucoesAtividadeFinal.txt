@@ -122,8 +122,8 @@ DELETE /expenses/:id
 
 Implementar filtros por:
 
-- Categoria
-- Status
+- Categoria FEITO
+- Status FEITO
 - Período
 - Valor mínimo
 - Valor máximo

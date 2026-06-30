@@ -52,6 +52,10 @@ async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
+async function getExpenseBy(where = {}) {
+    return await expense.findAll({where});
+}
+
 async function createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId) {
     return await expense.create({ title, amount, date, description, status, fkUsuarioId, fkCategoryId });
 }
@@ -91,72 +95,8 @@ export default expense
 export {
     getAllExpense,
     getExpenseId,
+    getExpenseBy,
     createExpense,
     updateExpense,
     deleteExpense
 }
-
-
-// class Expense {
-//     constructor() {
-//         this.expenses = []
-//     }
-
-//     getAll() {
-//         return this.expenses;
-//     }
-
-
-//     getById(id) {
-//         return this.expenses.find(u => u.id === id);
-//     }
-
-
-//     create(title, amount, category, date, description) {
-
-//         const newExpens = {
-
-//             id: Math.floor(Math.random() * Math.floor(999999)),
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description,
-//             createdAt: new Date()
-//         }
-
-//         this.expenses.push(newExpens)
-//         return newExpens;
-//     }
-
-//     update(id, title, amount, category, date, description) {
-//         const index = this.expenses.findIndex(u => u.id === id)
-
-//         if (index === -1) {
-//             return null;
-//         };
-
-//         this.expenses[index] = {
-//             ...this.expenses[index],
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description
-//         }
-
-//         return this.expenses[index];
-//     }
-
-//     delete(id) {
-//         const index = this.expenses.findIndex(u => u.id === id)
-//         if (index === -1) {
-//             return null
-//         }
-
-//         this.expenses.splice(index, 1);
-
-//         return null
-
-//     }
-// }

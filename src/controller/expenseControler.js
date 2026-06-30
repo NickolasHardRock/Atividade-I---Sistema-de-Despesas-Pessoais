@@ -1,5 +1,7 @@
-import expense,{getAllExpense,
+import expense,{
+    getAllExpense,
     getExpenseId,
+    getExpenseBy,
     createExpense,
     updateExpense,
     deleteExpense} from "../models/expenseModel.js"
@@ -28,29 +30,36 @@ class ExpenseController {
         return  result
     }
 
-    async getByCategory(category) {
+    async getByWhere(where){
 
-        const result = ExpenseModel.getAll().filter(u => u.category === category)
-        console.log(result)
-
-        if (result.length === 0) {
-            throw new Error("Favor informar categoria válida")
-        }
-        if (!category) {
-            throw new Error("Favor informar categoria válida")
-        }
-
-         return await result
+       const expense = await getExpenseBy(where);
+       return expense;
+       
     }
 
-    async getByDate(date) {
-        const result = ExpenseModel.getAll().filter(u => u.date === date)
-        if (result.length === 0) {
-            throw new Error("Favor informar data válida")
-        }
+    // async getByCategory(category) {
 
-        return await result
-    }
+    //     const result = ExpenseModel.getAll().filter(u => u.category === category)
+    //     console.log(result)
+
+    //     if (result.length === 0) {
+    //         throw new Error("Favor informar categoria válida")
+    //     }
+    //     if (!category) {
+    //         throw new Error("Favor informar categoria válida")
+    //     }
+
+    //      return await result
+    // }
+
+    // async getByDate(date) {
+    //     const result = ExpenseModel.getAll().filter(u => u.date === date)
+    //     if (result.length === 0) {
+    //         throw new Error("Favor informar data válida")
+    //     }
+
+    //     return await result
+    // }
 
     async summary() {
         
