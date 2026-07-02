@@ -33,6 +33,12 @@ app.get('/api/v1/usuarios/',authMiddleware,UserView.getUser)
 
 app.get('/api/v1/despesas',  expenseView.getExpense)
 
+app.get('/api/v1/dashboard/total-expense', expenseView.getValorTotal)
+
+app.get('/api/v1/dashboard/expenses-count', expenseView.getQuantidadeTotal)
+
+app.get('/api/v1/dashboard/expenses-by-category', expenseView.getTotalPorCategoria)
+
 app.post('/api/v1/despesas/',  expenseView.createExpense)
 
 app.put('/api/v1/despesas/:id',  expenseView.updateExpense)

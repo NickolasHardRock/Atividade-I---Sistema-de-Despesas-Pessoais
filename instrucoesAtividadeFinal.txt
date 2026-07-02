@@ -122,9 +122,9 @@ DELETE /expenses/:id
 
 Implementar filtros por:
 
-- Categoria FEITO
-- Status FEITO
-- Período
+- Categoria Feito
+- Status Feito
+- Período 
 - Valor mínimo
 - Valor máximo
 
@@ -138,7 +138,7 @@ GET /expenses?status=PAGA&categoria=1
 
 # APIs Estatísticas Obrigatórias
 
-## Total de Gastos
+## Total de Gastos Feito
 
 ```http
 GET /dashboard/total-expenses
@@ -154,10 +154,10 @@ GET /dashboard/total-expenses
 
 ---
 
-## Quantidade de Despesas
+## Quantidade de Despesas Feito
 
 ```http
-GET /dashboard/expenses-count
+GET /dashboard/expenses-count 
 ```
 
 ### Resposta
@@ -197,21 +197,21 @@ GET /dashboard/expenses-by-category
 
 Obrigatório:
 
-- Migrations
-- Seeders
-- Associations
-- Validações
-- Query Filters
+- Migrations Feito
+- Seeders Feito
+- Associations Feito
+- Validações Feito
+- Query Filters Feito
 
 ---
 
 # Segurança
 
-- JWT
-- bcrypt
-- dotenv (*)
-- Middleware de autenticação
-- Tratamento global de erros
+- JWT Feito
+- bcrypt Feito
+- dotenv (*) Feito
+- Middleware de autenticação Feito
+- Tratamento global de erros 
 
 ---
 

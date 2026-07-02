@@ -1,19 +1,20 @@
-import expense,{
+import expense, {
     getAllExpense,
     getExpenseId,
     getExpenseBy,
     createExpense,
     updateExpense,
-    deleteExpense} from "../models/expenseModel.js"
+    deleteExpense
+} from "../models/expenseModel.js"
 
 class ExpenseController {
 
-   async getAll() {
+    async getAll() {
         const result = await getAllExpense();
-        if(result.length === 0){
+        if (result.length === 0) {
             throw new Error("Não dados para retornar")
         }
-        return  result
+        return result
     }
 
 
@@ -21,20 +22,20 @@ class ExpenseController {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido")
         }
-        const  result = await getExpenseId(id);
+        const result = await getExpenseId(id);
 
-        if(!result){
+        if (!result) {
             throw new Error("Despesas não encontrada")
         }
 
-        return  result
+        return result
     }
 
-    async getByWhere(where){
+    async getByWhere(where) {
 
-       const expense = await getExpenseBy(where);
-       return expense;
-       
+        const expense = await getExpenseBy(where);
+        return expense;
+
     }
 
     // async getByCategory(category) {
@@ -62,36 +63,48 @@ class ExpenseController {
     // }
 
     async summary() {
-        
-        const count = ExpenseModel.getAll().reduce((count ,u) => {
-            return count + u.amount
-        },0)
+        const expenses = await getAllExpense()
+        const total = expenses.reduce((sum, u) => {
+            return sum + Number(u.amount)
+        }, 0)
 
-        if (count === 0) {
-            throw new Error("Não a despesas, para resumir")
+        if (total === 0) {
+            throw new Error("Não há despesas para resumir")
         }
 
-        return await count;
+        return total
+    }
+
+    async summaryCount() {
+        const expenses = await getAllExpense()
+
+        const count = expenses.length
+
+        if (count === 0) {
+            throw new Error("Não há despesas para contar")
+        }
+
+        return count
     }
 
     async summaryCategory(category) {
-        result = ExpenseModel.getAll()
-            .filter(u => u.category === category)
-            .reduce((count, u) => {
-                return count + u.amount
-            }, 0)
+        const expenses = await getAllExpense()
+        const result = await expenses.reduce((acc, u) => {
+            const category = u.fkCategoryId
+            const amount = Number(u.amount) || 0
 
-        const categoria = ExpenseModel.getAll().filter(u => u.category === category)
-        if (categoria.length === 0) {
-            throw new Error("Informa uma categorioa valida")
+            if (!category) {
+            return acc
         }
 
-        if (result === 0) {
-            throw new Error("Não a despesas, para resumir")
-        }
+            if (!acc[category]) {
+                acc[category] = 0
+            }
+            acc[category] += amount
 
-        return await result
-
+            return  acc
+        }, {})
+        return  result
     }
 
     async create(title, amount, date, description, status, fkUsuarioId, fkCategoryId) {
@@ -104,19 +117,19 @@ class ExpenseController {
         if (new Date(date) > new Date()) {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
-        if(!status == "PAGA" || !status =="PENDENTE"){
+        if (!status == "PAGA" || !status == "PENDENTE") {
             return new Error("Por favor escolha entre PAGA ou PENDENTE")
         }
-        if(!fkUsuarioId){
+        if (!fkUsuarioId) {
             return new Error("Adicione um usuario");
         }
-        if(!fkCategoryId){
+        if (!fkCategoryId) {
             return new Error("Adicione uma categoria ")
         }
 
-        const  result =  await createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId);
+        const result = await createExpense(title, amount, date, description, status, fkUsuarioId, fkCategoryId);
 
-        return  result
+        return result
 
     }
 
@@ -139,7 +152,7 @@ class ExpenseController {
 
         const result = await updateExpense(id, title, amount, category, date, description)
 
-        return result 
+        return result
 
     }
 
@@ -149,9 +162,9 @@ class ExpenseController {
         }
 
         const result = await deleteExpense(id)
-        
 
-        return  result
+
+        return result
 
     }
 

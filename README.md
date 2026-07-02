@@ -1,136 +1,235 @@
 # Atividade Backend Sistema de Despesas Pessoais
-## Objetivo da atividade:  
- Desenvolver uma API REST em Node.js para gerenciamento de despesas pessoais, permitindo registrar, listar, atualizar e remover despesas.
 
-## Tecnologias Usadas: 
+## Objetivo da Atividade
 
-Node.js - Como ambiente de desenvolvimento
+Desenvolver uma API REST em Node.js para gerenciamento de despesas pessoais, permitindo registrar, listar, atualizar e remover despesas, além de fornecer funcionalidades de autenticação de usuários e gerenciamento de categorias.
 
-Express - Para gerenciar as rotas
+## Tecnologias Utilizadas
 
-Nodemon - Para atualizações constantes
+*   **Node.js**: Ambiente de execução JavaScript.
+*   **Express**: Framework web para Node.js, utilizado para gerenciar rotas e requisições HTTP.
+*   **Sequelize**: ORM (Object-Relational Mapper) para Node.js, utilizado para interagir com o banco de dados relacional.
+*   **Nodemon**: Ferramenta para monitorar alterações no código e reiniciar o servidor automaticamente durante o desenvolvimento.
+*   **Git**: Sistema de controle de versão.
+*   **Postman/Insomnia**: Ferramentas para testar e consumir a API.
 
-git - Para versionamento
+## Como Executar
 
-Postmant - Para consumir a api
+Para configurar e executar o projeto localmente, siga os passos abaixo:
 
-## Como Executar 
+1.  **Clone o repositório** (se aplicável).
+2.  **Instale as dependências**: Navegue até o diretório raiz do projeto e execute:
+    ```bash
+    npm install
+    ```
+3.  **Execute o servidor**: Para iniciar a aplicação em modo de desenvolvimento com Nodemon:
+    ```bash
+    npm run dev
+    ```
+    O servidor será iniciado na porta `3000` (ou a porta configurada no `process.env.PORT`).
 
-```
-npm i
-npm run dev
-```
-Executar "npm i" para instalar as dependencias do projeto.
-Executar "npm run dev" para rodar o projeto com o nodemon.
+## Estrutura do Projeto
 
-## Rotas
+O projeto segue uma estrutura modular, separando as responsabilidades em `models`, `views` (controllers), `config` e `middleware`.
 
-Método|Rota|Descrição
---- | --- | ---
-GET|/expenses|Lista despesas
-GET|/expenses/id/:id|Busca despesa
-GET|/expenses/category/:category|Busca todas as despesa da categoria
-GET|/expenses/date/:date|Busca todas as despesa da data
-GET|/expenses/summary|Busca o valor total de todas as depesas
-GET|/expenses/summary/category/:category|Busca o valor total de todas as depesas da categoria
-POST|/expenses|Cria despesa
-PUT|/expenses/update/:id|Atualiza despesa
-DELETE|/expenses/:id|Remove despesa
+## Rotas da API
 
-## Modelo da Entidade Expense
+A API é dividida em três módulos principais: **Usuários**, **Despesas** e **Categorias**. As rotas são prefixadas com `/api/v1`.
 
-### Expense
+### Rotas de Usuários (`/api/v1/usuarios`)
 
-### id : identificador da expense em inteiro no maximo 6 caracteres
+| Método | Rota               | Descrição                          | Autenticação |
+| :----- | :----------------- | :--------------------------------- | :----------- |
+| `POST` | `/login`           | Realiza o login do usuário.        | Não          |
+| `POST` | `/`                | Cria um novo usuário.              | Não          |
+| `GET`  | `/`                | Retorna os dados do usuário logado.| Sim          |
 
-### exemplo : 476532
+### Rotas de Despesas (`/api/v1/despesas`)
 
-### title : Nome da expense em string, todas as expense devem ter um nome
+| Método   | Rota                               | Descrição                                                              | Autenticação |
+| :------- | :--------------------------------- | :--------------------------------------------------------------------- | :----------- |
+| `GET`    | `/`                                | Lista todas as despesas, com suporte a filtros.                        | Não          |
+| `GET`    | `/dashboard/total-expense`         | Retorna o valor total de todas as despesas.                            | Não          |
+| `GET`    | `/dashboard/expenses-count`        | Retorna a quantidade total de despesas.                                | Não          |
+| `GET`    | `/dashboard/expenses-by-category`  | Retorna o valor total de despesas agrupado por categoria.              | Não          |
+| `POST`   | `/`                                | Cria uma nova despesa.                                                 | Não          |
+| `PUT`    | `/:id`                             | Atualiza uma despesa existente pelo ID.                                | Não          |
+| `DELETE` | `/:id`                             | Remove uma despesa pelo ID.                                            | Não          |
 
-### exemplo : Carne moída
+### Rotas de Categorias (`/api/v1/categoria`)
 
-### amount : Valor da expense em decimal, não pode ser menor que zero
+| Método   | Rota               | Descrição                                | Autenticação |
+| :------- | :----------------- | :--------------------------------------- | :----------- |
+| `GET`    | `/`                | Lista todas as categorias.               | Não          |
+| `GET`    | `/:id`             | Busca uma categoria específica pelo ID.  | Não          |
+| `POST`   | `/`                | Cria uma nova categoria.                 | Não          |
+| `PUT`    | `/:id`             | Atualiza uma categoria existente pelo ID.| Não          |
+| `DELETE` | `/:id`             | Remove uma categoria pelo ID.            | Não          |
 
-### exemplo : 23.34
+## Modelo da Entidade `Expense`
 
-### category : Nome da categoria da expense em string
+O modelo `Expense` representa uma despesa individual e possui os seguintes campos:
 
-###  exemplo : Compra do mês
+| Campo        | Tipo      | Descrição                                                               | Exemplo        |
+| :----------- | :-------- | :---------------------------------------------------------------------- | :------------- |
+| `id`         | `INTEGER` | Identificador único da despesa. Auto-incrementável e chave primária.    | `476532`       |
+| `description`| `STRING`  | Descrição detalhada da despesa.                                         | `Carne moída para o almoço` |
+| `amount`     | `DECIMAL` | Valor da despesa. Não pode ser menor que zero.                          | `23.34`        |
+| `category`   | `STRING`  | Nome da categoria da despesa.                                           | `Compra do mês`|
+| `status`     | `ENUM`    | Status da despesa (`PAGA`, `PENDENTE`, `ATRASADA`).                     | `PAGA`         |
+| `date`       | `DATEONLY`| Data em que a despesa ocorreu. Não pode ser uma data futura.            | `2026-03-24`   |
+| `createdAt`  | `DATE`    | Data de criação do registro (gerado automaticamente pelo sistema).      | `2026-03-24`   |
+| `updatedAt`  | `DATE`    | Data da última atualização do registro (gerado automaticamente pelo sistema). | `2026-03-24`   |
 
-### date : Data que o usuario coloca na expense, não pode ser uma data futura e é uma string
+## Exemplos de Requisições
 
-### exemplo : 26-03-24
-            
-### description : Uma descrição da expense e uma string
+Utilize ferramentas como Postman ou Insomnia para testar os endpoints da API.
 
-### exemplo : Carne moída para o almoço 
+### Autenticação
 
-### createdAt : Data que o sistema coloca no expense e uma string
-### exemplo : 26-03-24
+**Login de Usuário**
 
-# Requisições
-Aqui foi usado o Postman para usar as requições
+`POST /api/v1/usuarios/login`
 
-### POST - Adicionar Despesa
-
-```
-http://localhost:3000/expenses
-```
-﻿
-### Body raw (json)
-```
+```json
 {
-    "title":"Supermercado",
+    "email": "seu_email@example.com",
+    "password": "sua_senha"
+}
+```
+
+**Criação de Usuário**
+
+`POST /api/v1/usuarios/`
+
+```json
+{
+    "name": "Nome do Usuário",
+    "email": "novo_usuario@example.com",
+    "password": "senha_segura"
+}
+```
+
+**Obter Dados do Usuário (requer token de autenticação no header `Authorization: Bearer <token>`)**
+
+`GET /api/v1/usuarios/`
+
+### Despesas
+
+**Adicionar Despesa**
+
+`POST /api/v1/despesas/`
+
+```json
+{
+    "title": "Supermercado",
     "amount": 150.50,
-    "category":"Alimentação",
+    "category": "Alimentação",
     "date": "2026-03-25",
-    "description": "Compra semanal"
+    "description": "Compra semanal",
+    "status": "PENDENTE",
+    "fkUsuarioId": 1, 
+    "fkCategoryId": 1 
 }
 ```
-### GET - Ver Todas as Despesas
-```
-http://localhost:3000/expenses/
-```
 
-### GET - Ver Aquela Despesa
-```
-http://localhost:3000/expenses/id/1774221170515
-```
-﻿### GET - Ver por Categorias
-```
-http://localhost:3000/expenses/category/Esporte
-```
-### ﻿GET - Ver por Data
-```
-http://localhost:3000/expense/date/2026-03-20
-```
+**Listar Todas as Despesas (com filtros)**
 
-### GET - Summary
-```
-http://localhost:3000/expense/sumary
-```
-﻿
-### GET - Sumary Category
-```
-http://localhost:3000/expense/sumary/category/Esporte
-```
+`GET /api/v1/despesas`
 
-### PUT - Atualizando Despesa
-```
-http://localhost:3000/expense/update/1774221241930
-```
+Exemplos de filtros:
 
-### Body raw (json)
-```
+*   **Por Categoria:** `GET /api/v1/despesas?category=Alimentacao`
+*   **Por Status:** `GET /api/v1/despesas?status=PAGA`
+*   **Combinação de Filtros:** `GET /api/v1/despesas?status=PENDENTE&category=Transporte`
+
+**Obter Despesa por ID**
+
+`GET /api/v1/despesas/:id`
+
+Exemplo: `GET /api/v1/despesas/123`
+
+**Atualizar Despesa**
+
+`PUT /api/v1/despesas/:id`
+
+Exemplo: `PUT /api/v1/despesas/123`
+
+```json
 {
-    "title":"peido",
-    "amount": 150.50,
-    "category":"Alimentação",
+    "title": "Nova Título",
+    "amount": 160.00,
+    "category": "Nova Categoria",
     "date": "2026-03-10",
-    "description": "Compra semanal"
+    "description": "Descrição atualizada",
+    "status": "PAGA",
+    "fkUsuarioId": 1,
+    "fkCategoryId": 2
 }
 ```
-### DELETE -Deletar Despesa
+
+**Remover Despesa**
+
+`DELETE /api/v1/despesas/:id`
+
+Exemplo: `DELETE /api/v1/despesas/123`
+
+### Dashboard
+
+**Valor Total das Despesas**
+
+`GET /api/v1/dashboard/total-expense`
+
+**Quantidade Total de Despesas**
+
+`GET /api/v1/dashboard/expenses-count`
+
+**Total por Categoria**
+
+`GET /api/v1/dashboard/expenses-by-category`
+
+### Categorias
+
+**Listar Todas as Categorias**
+
+`GET /api/v1/categoria`
+
+**Obter Categoria por ID**
+
+`GET /api/v1/categoria/:id`
+
+Exemplo: `GET /api/v1/categoria/1`
+
+**Criar Categoria**
+
+`POST /api/v1/categoria`
+
+```json
+{
+    "name": "Alimentação"
+}
 ```
-http://localhost:3000/expense/delete/177445
+
+**Atualizar Categoria**
+
+`PUT /api/v1/categoria/:id`
+
+Exemplo: `PUT /api/v1/categoria/1`
+
+```json
+{
+    "name": "Alimentação Essencial"
+}
 ```
+
+**Remover Categoria**
+
+`DELETE /api/v1/categoria/:id`
+
+Exemplo: `DELETE /api/v1/categoria/1`
+
+## Observações
+
+*   A autenticação é gerenciada por um `authMiddleware` para rotas específicas.
+*   A conexão com o banco de dados é feita via Sequelize, com sincronização automática dos modelos (`sequelize.sync({ alter: true })`).
+*   Validações básicas são realizadas nos controllers para garantir a integridade dos dados.

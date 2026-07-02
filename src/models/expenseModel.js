@@ -52,7 +52,8 @@ async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
-async function getExpenseBy(where = {}) {
+async function getExpenseBy(where = {}) 
+{
     return await expense.findAll({where});
 }
 
