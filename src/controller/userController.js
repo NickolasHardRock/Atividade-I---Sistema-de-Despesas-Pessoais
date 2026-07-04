@@ -166,12 +166,12 @@ class UserController {
 
     }
 
-    delete(id) {
+     delete(id) {
         if (!id) {
             throw new Error("Por favor adicione um id válido");
         }
 
-        return User.deleteUser(id);
+        return deleteUser(id);
     }
 }
 
