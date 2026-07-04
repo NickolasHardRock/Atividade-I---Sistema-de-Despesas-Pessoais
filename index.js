@@ -4,13 +4,16 @@ import expenseView from './src/view/expenseView.js';
 import categoriaView from './src/view/categoriaView.js';
 import authMiddleware from './src/middleware/auth.js'
 import { sequelize } from './src/config/db.js';
+import cors from 'cors'
 import './src/models/index.js';
 
 const app = express();
 
-// app.use(router)
+app.use(cors)
 
 app.use(express.json());
+
+
 
 const PORT = 3000;
 
