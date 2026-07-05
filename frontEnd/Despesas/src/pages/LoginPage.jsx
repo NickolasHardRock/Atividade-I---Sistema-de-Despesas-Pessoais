@@ -5,8 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 function LoginPage() {
-  const [email, setEmail] = useState('admin@despesas.com');
-  const [senha, setSenha] = useState('admin123');
+  const [email, setEmail] = useState('admin@example.com');
+  const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, senha);
+      await login(email, password);
       toast.success('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (error) {
@@ -47,8 +47,8 @@ function LoginPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
             <input
               type="password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />

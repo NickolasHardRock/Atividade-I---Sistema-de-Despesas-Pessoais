@@ -1,13 +1,15 @@
 import api from './api';
 
 const authService = {
-  async login(email, senha) {
-    const response = await api.post('/auth/login', { email, senha });
+  async login(email, password) {
+    console.log(email,password)
+    const response = await api.post('/usuarios/login', { email, password });
+    console.log(response)
     return response.data;
   },
 
   async register(name, email, senha) {
-    const response = await api.post('/users', { name, email, senha });
+    const response = await api.post('/usuarios', { name, email, senha });
     return response.data;
   },
 

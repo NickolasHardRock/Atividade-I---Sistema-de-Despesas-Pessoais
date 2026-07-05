@@ -12,7 +12,7 @@ export function useCategories() {
       setLoading(true);
       setError(null);
       const data = await categoryService.getAll();
-      setCategories(data);
+      setCategories(data.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao carregar categorias');
     } finally {

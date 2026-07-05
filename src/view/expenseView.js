@@ -6,7 +6,7 @@ class ExpenseView {
 
 
     async getExpense(req, res) {
-        const { id, amount, date, status, categoryId, usuarioId, startDate, endDate, minAmount, maxAmount } = req.query
+        const { id, amount, date, status, categoryId, usuarioId } = req.query
 
         const whereClause = {}
         try {
@@ -133,9 +133,7 @@ class ExpenseView {
                 }
                 whereClause.fkCategoryId = categoryId
             }
-            if(starDate && endDate){
-                
-            }
+        
 
             if(Object.keys(req.query).length > 1){
                 const result = await ExpenseController.getByWhere(whereClause)

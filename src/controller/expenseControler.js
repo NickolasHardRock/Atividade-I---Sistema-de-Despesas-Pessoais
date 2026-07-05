@@ -6,6 +6,7 @@ import expense, {
     updateExpense,
     deleteExpense
 } from "../models/expenseModel.js"
+import { getAllCategorys } from "../models/categoryModel.js"
 
 class ExpenseController {
 
@@ -87,24 +88,35 @@ class ExpenseController {
         return count
     }
 
-    async summaryCategory(category) {
+    async summaryCategory() {
         const expenses = await getAllExpense()
-        const result = await expenses.reduce((acc, u) => {
-            const category = u.fkCategoryId
-            const amount = Number(u.amount) || 0
+        const category = await getAllCategorys()
 
-            if (!category) {
-            return acc
-        }
 
-            if (!acc[category]) {
-                acc[category] = 0
-            }
-            acc[category] += amount
+        const totalsById = expenses.reduce((acc, u) => {
+            const id = String(u.fkCategoryId ?? "");
+            const amount = Number(u.amount) || 0;
+            if (!id) return acc;
+            acc[id] = (acc[id] || 0) + amount;
+            return acc;
+        }, {});
 
-            return  acc
-        }, {})
-        return  result
+
+        const categoryMap = category.reduce((m, c) => {
+            const cid = String(c.id ?? "");
+            const name = c.name ?? "Sem categoria";
+            if (cid) m[cid] = name;
+            return m;
+        }, {});
+
+
+        const result = Object.keys(totalsById).map(id => ({
+            id,
+            name: categoryMap[id] ?? "Sem categoria",
+            total: totalsById[id]
+        }));
+
+        return result;
     }
 
     async create(title, amount, date, description, status, fkUsuarioId, fkCategoryId) {

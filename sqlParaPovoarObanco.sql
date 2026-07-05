@@ -6,6 +6,9 @@ select * from despesasdb.category;
 
 select * from despesasdb.users;
 
+SELECT id, email FROM despesasdb.users WHERE email IN ('admin@example.com','nickolas@example.com');
+
+
 drop table despesasdb.expenses;
 drop table despesasdb.users;
 drop table despesasdb.category;

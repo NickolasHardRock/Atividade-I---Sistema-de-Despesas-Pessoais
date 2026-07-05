@@ -3,6 +3,7 @@ import { useExpenses } from '../hooks/useExpenses';
 import { useCategories } from '../hooks/useCategories';
 import { Trash2, Edit2, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
+import React from 'react';
 
 function ExpensesPage() {
   const { expenses, loading, createExpense, updateExpense, deleteExpense } = useExpenses();
