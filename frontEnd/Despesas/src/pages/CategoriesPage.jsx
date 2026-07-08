@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useCategories } from '../hooks/useCategories';
 import { Trash2, Edit2, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
+
 
 function CategoriesPage() {
   const { categories, loading, createCategory, updateCategory, deleteCategory } = useCategories();

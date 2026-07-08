@@ -1,24 +1,36 @@
 import { useState } from 'react';
 import { useExpenses } from '../hooks/useExpenses';
 import { useCategories } from '../hooks/useCategories';
+import { useAuth } from '../contexts/AuthContext';
 import { Trash2, Edit2, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import React from 'react';
 
 function ExpensesPage() {
-  const { expenses, loading, createExpense, updateExpense, deleteExpense } = useExpenses();
+  const { expenses, loading: expensesLoading, createExpense, updateExpense, deleteExpense } = useExpenses();
   const { categories } = useCategories();
+  const { user, loading: authLoading } = useAuth();
+  
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({
+  
+  const initialFormState = {
     title: '',
     amount: '',
-    category: '',
-    date: new Date().toISOString().split('T')[0],
     description: '',
-  });
+    status: 'PENDENTE',
+    date: new Date().toISOString().split('T')[0],
+    fkUsuarioId: '',
+    fkCategoryId: '',
+
+    
+    
+  };
+
+  const [formData, setFormData] = useState(initialFormState);
+  
   const [filters, setFilters] = useState({
-    category: '',
+    fkCategoryId: '',
     status: '',
   });
 
@@ -27,24 +39,54 @@ function ExpensesPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const getCategoryName = (categoryId) => {
+    if (!categories) return 'Carregando...';
+    const category = categories.find(cat => {
+      const c = cat.dataValues || cat;
+      return Number(c.id) === Number(categoryId); // Comparação como número
+    });
+    const cObj = category?.dataValues || category;
+    return cObj ? cObj.name : 'Sem categoria';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.amount || !formData.category) {
+    
+    if (!user || !user.id) {
+      toast.error('Erro: Usuário não identificado.');
+      return;
+    }
+
+    console.log(user.id)
+
+    if (!formData.title || !formData.amount || !formData.fkCategoryId || !formData.status) {
       toast.error('Preencha todos os campos obrigatórios');
       return;
     }
 
+   
+    const expenseData = {
+      ...formData,
+      amount: Number(formData.amount),
+      fkCategoryId: Number(formData.fkCategoryId),
+      fkUsuarioId: Number(user.id) 
+    };
+
     try {
       if (editingId) {
-        await updateExpense(editingId, formData);
+        await updateExpense(Number(editingId), expenseData); 
+        toast.success('Despesa atualizada!');
       } else {
-        await createExpense(formData);
+        await createExpense(expenseData);
+        toast.success('Despesa criada!');
       }
-      setFormData({ title: '', amount: '', category: '', date: new Date().toISOString().split('T')[0], description: '' });
+      
+      setFormData(initialFormState);
       setEditingId(null);
       setShowForm(false);
     } catch (error) {
       console.error(error);
+      toast.error('Erro ao salvar despesa');
     }
   };
 
@@ -53,9 +95,10 @@ function ExpensesPage() {
     setFormData({
       title: exp.title,
       amount: exp.amount,
-      category: exp.category,
+      fkCategoryId: exp.fkCategoryId,
       date: exp.date,
       description: exp.description || '',
+      status: exp.status || 'PENDENTE',
     });
     setEditingId(exp.id);
     setShowForm(true);
@@ -63,194 +106,139 @@ function ExpensesPage() {
 
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja deletar esta despesa?')) {
-      await deleteExpense(id);
+      try {
+        await deleteExpense(Number(id)); // Garante que ID da deleção é número
+        toast.success('Despesa deletada!');
+      } catch (error) {
+        toast.error('Erro ao deletar');
+      }
     }
   };
 
-  const filteredExpenses = expenses.filter(exp => {
+  const filteredExpenses = (Array.isArray(expenses) ? expenses : []).filter(exp => {
     const e = exp.dataValues || exp;
-    if (filters.category && e.category !== filters.category) return false;
+    if (filters.fkCategoryId && Number(e.fkCategoryId) !== Number(filters.fkCategoryId)) return false;
+    if (filters.status && e.status !== filters.status) return false;
     return true;
   });
 
-  if (loading) return <div className="text-center py-8">Carregando despesas...</div>;
+  if (authLoading || expensesLoading) return <div>Carregando...</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Despesas</h1>
+    <div>
+      <div>
+        <h1>Despesas</h1>
         <button
           onClick={() => {
-            setFormData({ title: '', amount: '', category: '', date: new Date().toISOString().split('T')[0], description: '' });
+            setFormData(initialFormState);
             setEditingId(null);
             setShowForm(!showForm);
           }}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
         >
           <Plus size={20} /> Nova Despesa
         </button>
       </div>
 
-      {/* Formulário */}
       {showForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            {editingId ? 'Editar Despesa' : 'Nova Despesa'}
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h2>{editingId ? 'Editar Despesa' : 'Nova Despesa'}</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Título *</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  required
-                />
+                <label>Título *</label>
+                <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Valor *</label>
-                <input
-                  type="number"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleInputChange}
-                  step="0.01"
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  required
-                />
+                <label>Valor *</label>
+                <input type="number" name="amount" value={formData.amount} onChange={handleInputChange} step="0.01" min="0" required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Categoria *</label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  required
-                >
+                <label>Categoria *</label>
+                <select name="fkCategoryId" value={formData.fkCategoryId} onChange={handleInputChange} required>
                   <option value="">Selecione uma categoria</option>
-                  {categories.map(cat => {
+                  {Array.isArray(categories) && categories.map((cat, idx) => {
                     const c = cat.dataValues || cat;
-                    return <option key={c.id} value={c.name}>{c.name}</option>;
+                    return <option key={c.id ?? `cat-${idx}`} value={c.id}>{c.name}</option>;
                   })}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Data</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
+                <label>Status *</label>
+                <select name="status" value={formData.status} onChange={handleInputChange} required>
+                  <option value="PENDENTE">Pendente</option>
+                  <option value="PAGA">Paga</option>
+                </select>
+              </div>
+              <div>
+                <label>Data</label>
+                <input type="date" name="date" value={formData.date} onChange={handleInputChange} />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descrição</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows="3"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <label>Descrição</label>
+              <textarea name="description" value={formData.description} onChange={handleInputChange} rows="3" />
             </div>
-            <div className="flex gap-2">
-              <button
-                type="submit"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
-              >
-                {editingId ? 'Atualizar' : 'Criar'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-lg transition"
-              >
-                Cancelar
-              </button>
+            <div>
+              <button type="submit">{editingId ? 'Atualizar' : 'Criar'}</button>
+              <button type="button" onClick={() => setShowForm(false)}>Cancelar</button>
             </div>
           </form>
         </div>
       )}
 
-      {/* Filtros */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <select
-          value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-          className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
+      <div style={{ display: 'flex', gap: '10px', margin: '20px 0' }}>
+        <select value={filters.fkCategoryId} onChange={(e) => setFilters({ ...filters, fkCategoryId: e.target.value })}>
           <option value="">Todas as categorias</option>
-          {categories.map(cat => {
+          {Array.isArray(categories) && categories.map((cat, idx) => {
             const c = cat.dataValues || cat;
-            return <option key={c.id} value={c.name}>{c.name}</option>;
+            return <option key={c.id ?? `cat-filter-${idx}`} value={c.id}>{c.name}</option>;
           })}
+        </select>
+        <select value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+          <option value="">Todos os status</option>
+          <option value="PENDENTE">Pendentes</option>
+          <option value="PAGA">Pagas</option>
         </select>
       </div>
 
-      {/* Lista de Despesas */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <div>
         {filteredExpenses.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-100 dark:bg-gray-700">
-                <tr>
-                  <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Título</th>
-                  <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Categoria</th>
-                  <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Valor</th>
-                  <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Data</th>
-                  <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses.map((expense) => {
-                  const exp = expense.dataValues || expense;
-                  return (
-                    <tr key={exp.id} className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                      <td className="py-3 px-4 text-gray-800 dark:text-gray-200">{exp.title}</td>
-                      <td className="py-3 px-4">
-                        <span className="bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 px-2 py-1 rounded text-xs">
-                          {exp.category}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 font-semibold text-gray-800 dark:text-gray-200">
-                        R$ {parseFloat(exp.amount).toFixed(2)}
-                      </td>
-                      <td className="py-3 px-4 text-gray-600 dark:text-gray-400">
-                        {new Date(exp.date).toLocaleDateString('pt-BR')}
-                      </td>
-                      <td className="py-3 px-4 flex gap-2">
-                        <button
-                          onClick={() => handleEdit(expense)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition"
-                          title="Editar"
-                        >
-                          <Edit2 size={16} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(exp.id)}
-                          className="bg-red-500 hover:bg-red-600 text-white p-2 rounded transition"
-                          title="Deletar"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredExpenses.map((expense, idx) => {
+                const exp = expense.dataValues || expense;
+                return (
+                  <tr key={exp.id ?? `expense-${idx}`}>
+                    <td>{exp.title}</td>
+                    <td>{getCategoryName(exp.fkCategoryId)}</td>
+                    <td>R$ {parseFloat(exp.amount).toFixed(2)}</td>
+                    <td>{new Date(exp.date).toLocaleDateString('pt-BR')}</td>
+                    <td>
+                      <span style={{ color: exp.status === 'PAGA' ? 'green' : 'orange', fontWeight: 'bold' }}>
+                        {exp.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button onClick={() => handleEdit(expense)}><Edit2 size={16} /></button>
+                      <button onClick={() => handleDelete(exp.id)}><Trash2 size={16} /></button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         ) : (
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            Nenhuma despesa encontrada
-          </div>
+          <p>Nenhuma despesa encontrada</p>
         )}
       </div>
     </div>

@@ -121,22 +121,22 @@ class ExpenseController {
 
     async create(title, amount, date, description, status, fkUsuarioId, fkCategoryId) {
         if (!title) {
-            return new Error("Por favor adicione um titulo");
+            throw new Error("Por favor adicione um titulo");
         }
-        if (amount < 0.0) {
-            return new Error("Por favor adicione um gasto");
+        if (Number(amount) < 0.0) {
+            throw new Error("Por favor adicione um gasto");
         }
-        if (new Date(date) > new Date()) {
-            return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
+        if (!date || new Date(date) > new Date()) {
+            throw new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
-        if (!status == "PAGA" || !status == "PENDENTE") {
-            return new Error("Por favor escolha entre PAGA ou PENDENTE")
+        if (status !== "PAGA" && status !== "PENDENTE") {
+            throw new Error("Por favor escolha entre PAGA ou PENDENTE")
         }
         if (!fkUsuarioId) {
-            return new Error("Adicione um usuario");
+            throw new Error("Adicione um usuario");
         }
         if (!fkCategoryId) {
-            return new Error("Adicione uma categoria ")
+            throw new Error("Adicione uma categoria ")
         }
 
         const result = await createExpense(title, amount, date, description, status, fkUsuarioId, fkCategoryId);

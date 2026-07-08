@@ -18,16 +18,16 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const login = useCallback(async (email, senha) => {
-    const data = await authService.login(email, senha);
+  const login = useCallback(async (email, password) => {
+    const data = await authService.login(email, password);
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
     setUser(data.user);
     return data;
   }, []);
 
-  const register = useCallback(async (name, email, senha) => {
-    const data = await authService.register(name, email, senha);
+  const register = useCallback(async (name, email, password, perfil) => {
+    const data = await authService.register(name, email, password, perfil);
     return data;
   }, []);
 

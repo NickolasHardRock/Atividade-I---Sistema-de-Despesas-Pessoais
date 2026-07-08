@@ -24,9 +24,11 @@ function Layout() {
               <div>
                 <div>
                   <span>{user?.name}</span>
+                  <br />
                   <button onClick={handleLogout}>
                     Sair
                   </button>
+                  <br />
                 </div>
               </div>
 

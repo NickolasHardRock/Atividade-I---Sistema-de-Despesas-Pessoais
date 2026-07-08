@@ -12,7 +12,7 @@ const expenseService = {
   },
 
   async create(data) {
-    const response = await api.post('/despesas', data);
+    const response = await api.post('/despesas/', data);
     return response.data;
   },
 

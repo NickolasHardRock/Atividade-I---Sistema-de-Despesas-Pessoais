@@ -18,6 +18,13 @@ function DashboardPage() {
   if (statsLoading || expensesLoading) {
     return <div>Carregando...</div>;
   }
+  const getCategoryName = (categoryId) => {
+  if (!stats.byCategory) return 'Sem categoria';
+  const category = stats.byCategory.find(c => String(c.id) === String(categoryId));
+  return category ? category.name : 'Outros';
+};
+
+  console.log(expenses)
 
   return (
     <div>
@@ -43,11 +50,12 @@ function DashboardPage() {
       <div>
         <div>
           <h2>Despesas por Categoria</h2>
+          
           {stats.byCategory && stats.byCategory.length > 0 ? (
             <ul>
               {stats.byCategory.map((c) => (
-                <li key={c.category}>
-                  {c.category}: R$ {parseFloat(c.total).toFixed(2)}
+                <li key={c.id}>
+                  {c.name}: R$ {parseFloat(c.total).toFixed(2)}
                 </li>
               ))}
             </ul>
@@ -61,8 +69,8 @@ function DashboardPage() {
           {stats.byCategory && stats.byCategory.length > 0 ? (
             <ul>
               {stats.byCategory.map((c) => (
-                <li key={c.category}>
-                  {c.category}: {c.total}
+                <li key={c.id}>
+                  {c.name}: {c.total}
                 </li>
               ))}
             </ul>
@@ -91,7 +99,7 @@ function DashboardPage() {
                 return (
                   <tr key={exp.id}>
                     <td>{exp.title}</td>
-                    <td>{exp.category}</td>
+                    <td>{getCategoryName(exp.fkCategoryId)}</td>
                     <td>R$ {parseFloat(exp.amount).toFixed(2)}</td>
                     <td>{new Date(exp.date).toLocaleDateString('pt-BR')}</td>
                   </tr>

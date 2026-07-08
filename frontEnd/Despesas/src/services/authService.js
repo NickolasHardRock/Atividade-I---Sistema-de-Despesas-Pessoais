@@ -8,8 +8,8 @@ const authService = {
     return response.data;
   },
 
-  async register(name, email, senha) {
-    const response = await api.post('/usuarios', { name, email, senha });
+  async register(name, email, password, role) {
+    const response = await api.post('/usuarios/', { name, email, password, role });
     return response.data;
   },
 

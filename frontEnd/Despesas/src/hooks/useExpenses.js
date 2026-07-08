@@ -13,7 +13,7 @@ export function useExpenses(initialFilters = {}) {
       setLoading(true);
       setError(null);
       const data = await expenseService.getAll(filters);
-      console.log(data.data)
+      
       setExpenses(data.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao carregar despesas');

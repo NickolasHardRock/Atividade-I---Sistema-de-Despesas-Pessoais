@@ -201,8 +201,16 @@ class ExpenseView {
 
     async createExpense(req, res) {
         try {
-            const { title, amount, date, description, status, user, category } = req.body
-            const newExpens = await ExpenseController.create(title, amount, date, description, status, user, category);
+            const { title, amount, date, description, status, fkUsuarioId, fkCategoryId, user, category } = req.body
+            const newExpens = await ExpenseController.create(
+                title,
+                amount,
+                date,
+                description,
+                status,
+                fkUsuarioId ?? user,
+                fkCategoryId ?? category
+            );
             res.status(201).json({
                 message: "Despasa criada",
                 data: newExpens,
