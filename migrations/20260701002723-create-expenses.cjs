@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false,
         references: { model: 'category', key: 'id' },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -58,11 +58,11 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('expenses');
-    // Remove enum type no Postgres (seguro chamar mesmo que não seja Postgres)
+    
     try {
       await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_expenses_status";');
     } catch (e) {
-      // ignore if dialect não suporta ou nome do enum for diferente
+      
     }
   }
 };

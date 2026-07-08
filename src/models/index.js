@@ -8,11 +8,13 @@ const initModels = () => {
 
     expense.belongsTo(category,{
         foreignKey:'fkCategoryId',
-        as:'category'
+        as:'category',
+        onDelete:'CASCADE'
     })
     category.hasMany(expense,{
         foreignKey:'fkCategoryId',
-        as:'expense'
+        as:'expense',
+        onDelete:'CASCADE'
     })
     
 
