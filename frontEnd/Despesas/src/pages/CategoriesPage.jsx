@@ -3,7 +3,6 @@ import { useCategories } from '../hooks/useCategories';
 import { Trash2, Edit2, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-
 function CategoriesPage() {
   const { categories, loading, createCategory, updateCategory, deleteCategory } = useCategories();
   const [showForm, setShowForm] = useState(false);
@@ -57,84 +56,69 @@ function CategoriesPage() {
     }
   };
 
-  if (loading) return <div className="text-center py-8">Carregando categorias...</div>;
+  if (loading) return <div>Carregando categorias...</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Categorias</h1>
+    <div>
+      <div>
+        <h1>Categorias</h1>
         <button
           onClick={() => {
             setFormData({ name: '', description: '', color: '#6366f1' });
             setEditingId(null);
             setShowForm(!showForm);
           }}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
         >
           <Plus size={20} /> Nova Categoria
         </button>
       </div>
 
-      {/* Formulário */}
       {showForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            {editingId ? 'Editar Categoria' : 'Nova Categoria'}
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h2>{editingId ? 'Editar Categoria' : 'Nova Categoria'}</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome *</label>
+                <label>Nome *</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cor</label>
-                <div className="flex gap-2">
+                <label>Cor</label>
+                <div>
                   <input
                     type="color"
                     name="color"
                     value={formData.color}
                     onChange={handleInputChange}
-                    className="w-12 h-10 rounded cursor-pointer"
                   />
                   <input
                     type="text"
                     value={formData.color}
                     readOnly
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
                 </div>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Descrição</label>
+              <label>Descrição</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 rows="3"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-            <div className="flex gap-2">
-              <button
-                type="submit"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition"
-              >
+            <div>
+              <button type="submit">
                 {editingId ? 'Atualizar' : 'Criar'}
               </button>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-lg transition"
-              >
+              <button type="button" onClick={() => setShowForm(false)}>
                 Cancelar
               </button>
             </div>
@@ -142,40 +126,24 @@ function CategoriesPage() {
         </div>
       )}
 
-      {/* Grid de Categorias */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div>
         {categories.length > 0 ? (
           categories.map((category) => {
             const cat = category.dataValues || category;
             return (
-              <div
-                key={cat.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4"
-                style={{ borderLeftColor: cat.color }}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{cat.name}</h3>
-                    {cat.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{cat.description}</p>
-                    )}
+              <div key={cat.id} style={{ borderLeftColor: cat.color }}>
+                <div>
+                  <div>
+                    <h3>{cat.name}</h3>
+                    {cat.description && <p>{cat.description}</p>}
                   </div>
-                  <div
-                    className="w-8 h-8 rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                  />
+                  <div style={{ backgroundColor: cat.color }} />
                 </div>
-                <div className="flex gap-2 mt-4">
-                  <button
-                    onClick={() => handleEdit(category)}
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition flex items-center justify-center gap-1"
-                  >
+                <div>
+                  <button onClick={() => handleEdit(category)}>
                     <Edit2 size={16} /> Editar
                   </button>
-                  <button
-                    onClick={() => handleDelete(cat.id)}
-                    className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded transition flex items-center justify-center gap-1"
-                  >
+                  <button onClick={() => handleDelete(cat.id)}>
                     <Trash2 size={16} /> Deletar
                   </button>
                 </div>
@@ -183,7 +151,7 @@ function CategoriesPage() {
             );
           })
         ) : (
-          <div className="col-span-full p-8 text-center text-gray-500 dark:text-gray-400">
+          <div>
             Nenhuma categoria encontrada
           </div>
         )}

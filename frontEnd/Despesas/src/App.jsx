@@ -8,10 +8,8 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        
           <AppRoutes />
           <Toaster position="top-right" />
-        
       </AuthProvider>
     </Router>
   );
