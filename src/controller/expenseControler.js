@@ -1,111 +1,139 @@
-import expense,{getAllExpense,
+import expense, {
+    getAllExpense,
     getExpenseId,
+    getExpenseBy,
     createExpense,
     updateExpense,
-    deleteExpense} from "../models/expenseModel.js"
+    deleteExpense
+} from "../models/expenseModel.js"
 
 class ExpenseController {
 
-    getAll() {
-        const result = expense.getAllExpense();
-        if(result.length === 0){
+    async getAll() {
+        const result = await getAllExpense();
+        if (result.length === 0) {
             throw new Error("Não dados para retornar")
         }
         return result
     }
 
 
-    getById(id) {
+    async getById(id) {
         if (!id || isNaN(id) || id == '') {
             throw new Error("Favor informar id válido")
         }
-        const result = ExpenseModel.getById(id);
+        const result = await getExpenseId(id);
 
-        if(!result){
+        if (!result) {
             throw new Error("Despesas não encontrada")
         }
 
         return result
     }
 
-    getByCategory(category) {
+    async getByWhere(where) {
 
-        const result = ExpenseModel.getAll().filter(u => u.category === category)
-        console.log(result)
+        const expense = await getExpenseBy(where);
+        return expense;
 
-        if (result.length === 0) {
-            throw new Error("Favor informar categoria válida")
-        }
-        if (!category) {
-            throw new Error("Favor informar categoria válida")
-        }
-
-        return result
     }
 
-    getByDate(date) {
-        const result = ExpenseModel.getAll().filter(u => u.date === date)
-        if (result.length === 0) {
-            throw new Error("Favor informar data válida")
+    // async getByCategory(category) {
+
+    //     const result = ExpenseModel.getAll().filter(u => u.category === category)
+    //     console.log(result)
+
+    //     if (result.length === 0) {
+    //         throw new Error("Favor informar categoria válida")
+    //     }
+    //     if (!category) {
+    //         throw new Error("Favor informar categoria válida")
+    //     }
+
+    //      return await result
+    // }
+
+    // async getByDate(date) {
+    //     const result = ExpenseModel.getAll().filter(u => u.date === date)
+    //     if (result.length === 0) {
+    //         throw new Error("Favor informar data válida")
+    //     }
+
+    //     return await result
+    // }
+
+    async summary() {
+        const expenses = await getAllExpense()
+        const total = expenses.reduce((sum, u) => {
+            return sum + Number(u.amount)
+        }, 0)
+
+        if (total === 0) {
+            throw new Error("Não há despesas para resumir")
         }
 
-        return result
+        return total
     }
 
-    summary() {
-        
-        const count = ExpenseModel.getAll().reduce((count ,u) => {
-            return count + u.amount
-        },0)
+    async summaryCount() {
+        const expenses = await getAllExpense()
+
+        const count = expenses.length
 
         if (count === 0) {
-            throw new Error("Não a despesas, para resumir")
+            throw new Error("Não há despesas para contar")
         }
 
-        return count;
+        return count
     }
 
-    summaryCategory(category) {
-        result = ExpenseModel.getAll()
-            .filter(u => u.category === category)
-            .reduce((count, u) => {
-                return count + u.amount
-            }, 0)
+    async summaryCategory(category) {
+        const expenses = await getAllExpense()
+        const result = await expenses.reduce((acc, u) => {
+            const category = u.fkCategoryId
+            const amount = Number(u.amount) || 0
 
-        const categoria = ExpenseModel.getAll().filter(u => u.category === category)
-        if (categoria.length === 0) {
-            throw new Error("Informa uma categorioa valida")
+            if (!category) {
+            return acc
         }
 
-        if (result === 0) {
-            throw new Error("Não a despesas, para resumir")
-        }
+            if (!acc[category]) {
+                acc[category] = 0
+            }
+            acc[category] += amount
 
-        return result
-
+            return  acc
+        }, {})
+        return  result
     }
 
-    create(title, amount, category, date, description,usuario) {
+    async create(title, amount, date, description, status, fkUsuarioId, fkCategoryId) {
         if (!title) {
             return new Error("Por favor adicione um titulo");
         }
         if (amount < 0.0) {
             return new Error("Por favor adicione um gasto");
         }
-        if (!category) {
-            return new Error("Por favor adicione uma categoria");
-        }
         if (new Date(date) > new Date()) {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
+        if (!status == "PAGA" || !status == "PENDENTE") {
+            return new Error("Por favor escolha entre PAGA ou PENDENTE")
+        }
+        if (!fkUsuarioId) {
+            return new Error("Adicione um usuario");
+        }
+        if (!fkCategoryId) {
+            return new Error("Adicione uma categoria ")
+        }
 
-        const result = createExpense(title, amount, category, date, description, usuario)
+        const result = await createExpense(title, amount, date, description, status, fkUsuarioId, fkCategoryId);
 
         return result
 
     }
 
-    update(id, title, amount, category, date, description) {
+    async update(id, title, amount, category, date, description) {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
@@ -122,26 +150,21 @@ class ExpenseController {
             return new Error("Por favor adicione a data correta, (Não é possivel adicionar datas anteriores a atual)");
         }
 
-        const result = ExpenseModel.update(id, title, amount, category, date, description)
+        const result = await updateExpense(id, title, amount, category, date, description)
 
-        return result 
+        return result
 
     }
 
-    delete(id) {
+    async delete(id) {
         if (!id) {
             return new Error("Por favor adicione um id valido");
         }
 
-        const result = ExpenseModel.delete(id)
-        
-        const resposta = 
-        {
-            ...result,
-            
-        }
+        const result = await deleteExpense(id)
 
-        return ExpenseModel.delete(id)
+
+        return result
 
     }
 

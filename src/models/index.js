@@ -1,22 +1,34 @@
 import Sequelize from "sequelize";
-import sequelize from "../config/db.js";
+import {sequelize} from "../config/db.js";
 import expense from "./expenseModel.js";
 import user from "./userModel.js";
+import category from "./categoryModel.js";
 
-const initModels = () =>{
+const initModels = () => {
 
-user.hasMany(expense,{
-    foreignKey:'fk_usuarioId',
-    as:'expense'
-});
+    expense.belongsTo(category,{
+        foreignKey:'fkCategoryId',
+        as:'category'
+    })
+    category.hasMany(expense,{
+        foreignKey:'fkCategoryId',
+        as:'expense'
+    })
+    
 
-expense.belongsTo,{user,
-    foreignKey:'fk_usuarioId',
-    as:'user'
-}
+    user.hasMany(expense,{
+        foreignKey:'fkUsuarioId',
+        as:'expense'
+    });
 
-return sequelize;
+    expense.belongsTo(user, {
+        as:'user'
+    })
+
+    
+
+    return sequelize;
 
 };
 
-export {expense,user,initModels}
+export {expense,user,category,initModels}

@@ -1,33 +1,30 @@
-import sequelize from "../config/db.js";
-import { DataTypes } from "sequelize";
+import { sequelize } from "../config/db.js";
+import { DataTypes, where } from "sequelize";
 
-const user = sequelize.define('user',{
+const user = sequelize.define('users',{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
     name:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true
     },
     email:{
-        type:DataTypes.TEXT,
+        type:DataTypes.STRING,
         allowNull:true,
         unique:true
     },
-    senha:{
-        type:DataTypes.TEXT,
+    password:{
+        type:DataTypes.STRING,
         allowNull:true
     },
     role:{
-        type: DataTypes.ENUM('admin','user'),
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 'user'
     }
-},{
-    tableName:'user',
-    freezeTableName:true
 })
 
 async function getAllUser() {
@@ -39,22 +36,19 @@ async function getUserId(id) {
 }
 
 async function getUserName(name) {
-    const user = await  user.findAll()
-
-    return await user.find(user => user.name === name)
+   
+    return await user.findOne({where:{name}})
 }
 
 async function getUserEmail(email) {
-    const user = await user.findAll()
-
-    return await user.find(user => user.email === email)
+    return await user.findOne({where:{email}})
 }
 
-async function createUser(name,email,senha,role) {
-    return await user.create({name,email,senha,role});
+async function createUser(name,email,password,role) {
+    return await user.create(name,email,password,role);
 }
 
-async function updateUser(id,name,email,senha,role) {
+async function updateUser(id,name,email,password,role) {
     const user = await getUserId(id);
 
     if(!user){
@@ -63,7 +57,7 @@ async function updateUser(id,name,email,senha,role) {
 
     user.name = name;
     user.email = email;
-    user.senha = senha;
+    user.password = password;
     user.role = role;
 
     await user.save()

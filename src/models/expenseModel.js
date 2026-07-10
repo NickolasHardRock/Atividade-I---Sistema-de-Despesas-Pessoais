@@ -1,61 +1,70 @@
-import sequelize from "../config/db.js";
+import { sequelize } from "../config/db.js";
 import { DataTypes } from "sequelize";
 
-const expense = sequelize.define('expense',{
-    id:{
-        type:DataTypes.INTEGER,
-        primaryKey:true,
-        autoIncrement:true
+const expense = sequelize.define('expenses', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    title:{
-        type:DataTypes.TEXT,
-        allowNull:false
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    amount:{
-        type:DataTypes.DECIMAL,
-        allowNull:false
+    amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
     },
-    category:{
-        type:DataTypes.TEXT,
-        allowNull:false
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
     },
-    date:{
-        type:DataTypes.DATE,
-        allowNull:false
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
-    description:{
-        type:DataTypes.TEXT,
-        allowNull:true
+    status: {
+        type: DataTypes.ENUM('PENDENTE', 'PAGA')
     },
-    fk_usuarioId:{
-        type:DataTypes.INTEGER,
-        allowNull:true,
-        references:{
-            model:'user',
-            key:'id'
+    fkUsuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+        }
+    },
+    fkCategoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'category',
+            key: 'id'
         }
     }
-},{
-    tableName: 'expense',
-    freezeTableName:true
 })
 
-async function getAllExpense() {
-    return await expense.findAll();
+ async function getAllExpense() {
+    return await  expense.findAll();
 }
 
 async function getExpenseId(id) {
     return await expense.findByPk(id);
 }
 
-async function createExpense(title,amount,category,date,describe,fk_usuarioId) {
-    return await expense.create({title,amount,category,date,describe,fk_usuarioId});
+async function getExpenseBy(where = {}) 
+{
+    return await expense.findAll({where});
 }
 
-async function updateExpense(id,title,amount,category,date,describe,usuario) {
+async function createExpense(title, amount,  date, description, status, fkUsuarioId, fkCategoryId) {
+    return await expense.create({ title, amount, date, description, status, fkUsuarioId, fkCategoryId });
+}
+
+async function updateExpense(id, title, amount, category, date, description, usuario) {
     const expense = await getExpenseId(id);
 
-    if(!expense){
+    if (!expense) {
         throw new Error("Despesa não encontrada")
     }
 
@@ -63,7 +72,7 @@ async function updateExpense(id,title,amount,category,date,describe,usuario) {
     expense.amount = amount;
     expense.category = category;
     expense.date = date;
-    expense.describe = describe;
+    expense.description = description;
     expense.fk_usuarioId = usuario;
 
     await expense.save()
@@ -74,7 +83,7 @@ async function updateExpense(id,title,amount,category,date,describe,usuario) {
 async function deleteExpense(id) {
     const expense = await getExpenseId(id);
 
-    if(!expense){
+    if (!expense) {
         throw new Error("Adicione um id");
     }
 
@@ -87,70 +96,8 @@ export default expense
 export {
     getAllExpense,
     getExpenseId,
+    getExpenseBy,
     createExpense,
     updateExpense,
     deleteExpense
 }
-
-
-// class Expense{
-//     constructor(){
-//         this.expenses = []
-//     }
-
-//     getAll(){
-//         return this.expenses;
-//     }
-
-//     getById(id){
-//         return this.expenses.find(u => u.id === id );
-//     }
-
-//     create(title,amount,category,date,description){
-//         const newExpens = {
-//             id: Math.floor(Math.random() * Math.floor(999999)),
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description,
-//             createdAt: new Date()
-//         }
-
-//         this.expenses.push(newExpens)
-//         return newExpens;
-//     }
-
-//     update(id,title,amount,category,date,description){
-//         const index = this.expenses.findIndex(u => u.id === id)
-
-//         if (index === -1) {
-//             return null;
-//         };
-
-//         this.expenses[index] = {
-//             ...this.expenses[index], // Copia todas as propriedades do objeto na posição index
-//             title,
-//             amount,
-//             category,
-//             date,
-//             description
-//         }
-
-//         return this.expenses[index];
-//     }
-
-//     delete(id){
-//         const index = this.expenses.findIndex(u => u.id === id)
-//         if(index === -1){
-//             return null
-//         }
-
-//         this.expenses.splice(index,1);
-
-//         return null
-
-//     }
-// }
-
-// export default new Expense();
