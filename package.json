@@ -15,7 +15,7 @@
   "type": "module",
   "main": "./index.js",
   "scripts": {
-    "test": "start",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage",
     "dev": "nodemon src/index.js",
     "db:create": "node src/scripts/createDatabase.js"
   },
@@ -23,13 +23,16 @@
     "@sequelize/mysql": "^7.0.0-alpha.48",
     "@sequelize/sqlite3": "^7.0.0-alpha.48",
     "bcrypt": "^6.0.0",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jest": "^30.4.2",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.22.3",
     "nodemon": "^3.1.14",
     "sequelize": "^6.37.8",
-    "sqlite3": "^6.0.1"
+    "sqlite3": "^6.0.1",
+    "supertest": "^7.2.2"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.5"

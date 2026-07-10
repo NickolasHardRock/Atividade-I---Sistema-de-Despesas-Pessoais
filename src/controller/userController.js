@@ -18,6 +18,9 @@ class UserController {
 
 
     replacePassword(password){
+        if(!password){
+            return '';
+        }
         return '*'.repeat(password.length);
     }
 
@@ -92,7 +95,7 @@ class UserController {
             throw new Error("Favor adicionar um parametro válido")
         }
 
-        const result = await User.getUserName(name)
+        const result = await getUserName(name)
 
         if (!result) {
             throw new Error("Usuario não encontrado")
@@ -110,7 +113,7 @@ class UserController {
             throw new Error("Favor adicionar um email válido")
         }
 
-        const result = await User.getUserEmail(email)
+        const result = await getUserEmail(email)
 
         if (!email) {
             throw new Error("Email não encontrado")
@@ -120,7 +123,7 @@ class UserController {
 
     }
 
-    async create(name, email, password, role) {
+    async create(name, email, password, role, trasaction) {
         if (!name) {
             throw new Error("Favor adicione um nome");
         }
@@ -140,7 +143,7 @@ class UserController {
 
         console.log(hashedPassword)
 
-        const { dataValues: user } = await createUser( name,email,hashedPassword,role );
+        const { dataValues: user } = await createUser( name,email,hashedPassword,role, trasaction );
         return {...user, password: this.replacePassword(user.password)};
 
     }

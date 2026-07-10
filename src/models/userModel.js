@@ -1,5 +1,5 @@
 import { sequelize } from "../config/db.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, where } from "sequelize";
 
 const user = sequelize.define('users',{
     id:{
@@ -36,9 +36,8 @@ async function getUserId(id) {
 }
 
 async function getUserName(name) {
-    const user = await  user.findAll()
-
-    return await user.find(user => user.name === name)
+   
+    return await user.findOne({where:{name}})
 }
 
 async function getUserEmail(email) {
@@ -46,7 +45,7 @@ async function getUserEmail(email) {
 }
 
 async function createUser(name,email,password,role) {
-    return await user.create({name,email,password,role});
+    return await user.create(name,email,password,role);
 }
 
 async function updateUser(id,name,email,password,role) {
